@@ -3,6 +3,7 @@ from flask import render_template, send_from_directory
 from flask_restful import Api, Resource
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 import datetime
+from APIResource.GraphResource import GraphResource, GraphResource2
 app = Flask(__name__)
 api = Api(app)
 
@@ -44,7 +45,7 @@ import json
 class TestPathAPI(Resource):
     def __init__(self):
         factor = -1000
-        self.data = pd.read_csv('./data/p.csv', sep=' ',
+        self.data = pd.read_csv('./data/node2vec.emd', sep=' ',
                                 header=-1).sort_values(0).set_index(0)
         self.node = [[self.data.ix[i][1] * factor, self.data.ix[i][2] * factor]
                      for i in range(1, len(self.data) + 1)]
@@ -75,7 +76,8 @@ class MessageAPI(Resource):
 
 
 #################API Setting##############
-api.add_resource(TestPathAPI, '/graph/api/v1.0/test/')
+api.add_resource(GraphResource, '/graph/api/v1.0/test/')
+api.add_resource(GraphResource2, '/graph/api/v1.0/test1/')
 api.add_resource(MessageListAPI, '/todo/api/v1.0/messages',
                  endpoint='messages')
 api.add_resource(
