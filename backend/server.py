@@ -18,19 +18,19 @@ def index():
 @app.route('/js/<path:path>')
 def send_js(path):
     ''' Returns a file from the reports dir '''
-    return send_from_directory('./js', path)
+    return send_from_directory('./assert/js', path)
 
 
 @app.route('/css/<path:path>')
 def send_css(path):
     ''' Returns a file from the reports dir '''
-    return send_from_directory('./css', path)
+    return send_from_directory('./assert/css', path)
 
 
 @app.route('/lib/<path:path>')
 def send_lib(path):
     ''' Returns a file from the reports dir '''
-    return send_from_directory('./lib', path)
+    return send_from_directory('./assert/lib', path)
 #################Front End#########################
 
 #################Back End##########################
@@ -43,9 +43,10 @@ import json
 
 class TestPathAPI(Resource):
     def __init__(self):
+        factor = -1000
         self.data = pd.read_csv('./data/p.csv', sep=' ',
                                 header=-1).sort_values(0).set_index(0)
-        self.node = [[self.data.ix[i][1], self.data.ix[i][2]]
+        self.node = [[self.data.ix[i][1] * factor, self.data.ix[i][2] * factor]
                      for i in range(1, len(self.data) + 1)]
 
     def get(self):
