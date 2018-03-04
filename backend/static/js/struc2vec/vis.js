@@ -1,10 +1,13 @@
 /* global d3 */
-d3.json('/todo/api/v1.0/messages', function (err, data) {
-    render(data);
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
-});
+
+function testForceGraph(dataset_name) {
+    d3.json('/api/graph/' + dataset_name, function (err, data) {
+        render(data);
+        console.log('====================================');
+        console.log(data);
+        console.log('====================================');
+    });
+}
 
 function render(graph) {
 

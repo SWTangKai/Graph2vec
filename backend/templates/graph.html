@@ -6,25 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Struc2vec</title>
-    <script src="lib/d3.js"></script>
-    <style>
-        .node circle {
-            stroke: white;
-            stroke-width: 1.5px;
-            opacity: 1.0;
-        }
+    <link rel="stylesheet" href="lib/css/bootstrap.css">
+    <link rel="stylesheet" href="lib/css/bootstrap-select.css">
+    <link rel="stylesheet" href="lib/css/bootstrap-theme.css">
 
-        line {
-            stroke: black;
-            stroke-width: 1.5px;
-            stroke-opacity: 1.0;
-        }
-    </style>
+    <link rel="stylesheet" href="css/struc2vec.css">
+
+    <script src="lib/js/d3.js"></script>
+    <script src="lib/js/jquery-3.3.1.js"></script>
+    <script src="lib/js/bootstrap.js"></script>
+    <script src="lib/js/bootstrap-select.js"></script>
 </head>
 
-<body>
+<script>
+    function changedSelect() {
+        testForceGraph($('#slpk').find("option:selected").attr('value'));
+    }
+</script>
 
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h1>Struc2vec</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <button class="btn" type="button">
+                        1
+                    </button>
+                    <button class="btn" type="button">
+                        2
+                    </button>
+                    <button class="btn" type="button">
+                        3
+                    </button>
+                    <button class="btn" type="button">
+                        4
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <select id="slpk" class="selectpicker" data-live-search="true" onchange="changedSelect()"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
 </body>
+
+<script>
+    $(function () {
+        $(".selectpicker").selectpicker({
+            noneSelectedText: '请选择' //默认显示内容  
+        });
+        var select = $("#slpk");
+        d3.json('/api/graph/', function (error, d) {
+            window.j = d;
+            d.forEach(element => {
+                select.append("<option value='" + element + "'>" + element + "</option>");
+            });
+            $(window).on('load', function () {
+                $('.selectpicker').selectpicker('refresh');
+            });
+        })
+
+
+    });
+</script>
 
 <script src="js/struc2vec/vis.js"></script>
 
