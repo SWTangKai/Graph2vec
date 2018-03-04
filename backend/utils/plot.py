@@ -39,12 +39,4 @@ class Plot(object):
                     disp[u] += vec
 
         for e in edges:
-
-
-plt.figure()
-plt.title('model')
-nx.draw(G.G, pos=model.vectors, with_labels=True)
-plt.figure()
-plt.title('origin')
-nx.draw(G.G, with_labels=True)
-plt.show()
+            pass
