@@ -20,5 +20,5 @@ class GraphItem(Resource):
         df = pd.DataFrame(G.edges()).rename(columns={0: 'source', 1: 'target'})
         links = list(
             df.apply(lambda row: {'source': row['source'], 'target': row.target}, axis=1))
-        nodes = [{'id': x, 'size': 1} for x in G.nodes()]
+        nodes = [{'id': x, 'size': 4} for x in G.nodes()]
         return jsonify({'nodes': nodes, "links": links})

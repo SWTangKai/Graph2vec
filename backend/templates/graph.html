@@ -20,49 +20,60 @@
 
 <script>
     function changedSelect() {
-        testForceGraph($('#slpk').find("option:selected").attr('value'));
+        testForceGraph($('#slpk').find("option:selected").attr('value'), ".mainGraph");
     }
 </script>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <h1>Struc2vec</h1>
+    <div id="main">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <h1>Struc2vec</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <button class="btn" type="button">
+                            1
+                        </button>
+                        <button class="btn" type="button">
+                            2
+                        </button>
+                        <button class="btn" type="button">
+                            3
+                        </button>
+                        <button class="btn" type="button">
+                            4
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <select id="slpk" class="selectpicker" data-live-search="true" onchange="changedSelect()"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="btn-group">
-                    <button class="btn" type="button">
-                        1
-                    </button>
-                    <button class="btn" type="button">
-                        2
-                    </button>
-                    <button class="btn" type="button">
-                        3
-                    </button>
-                    <button class="btn" type="button">
-                        4
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="btn-group">
-                    <select id="slpk" class="selectpicker" data-live-search="true" onchange="changedSelect()"></select>
-                </div>
-            </div>
-            <div class="col-md-4">
+        <div id="content">
+            <div class="mainGraph"></div>
+            <div class="detailGroup">
+                <div class="detail" id="one">1</div>
+                <div class="detail" id="two">2</div>
             </div>
         </div>
     </div>
+
 </body>
 
 <script>
     $(function () {
         $(".selectpicker").selectpicker({
-            noneSelectedText: '请选择' //默认显示内容  
+            noneSelectedText: 'Please select one dataset' //默认显示内容  
         });
         var select = $("#slpk");
         d3.json('/api/graph/', function (error, d) {
@@ -70,12 +81,11 @@
             d.forEach(element => {
                 select.append("<option value='" + element + "'>" + element + "</option>");
             });
+            $('.selectpicker').selectpicker('refresh');
             $(window).on('load', function () {
                 $('.selectpicker').selectpicker('refresh');
             });
-        })
-
-
+        });
     });
 </script>
 
