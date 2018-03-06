@@ -18,9 +18,12 @@
     <script src="lib/js/bootstrap-select.js"></script>
 </head>
 
+<script src="js/struc2vec/force.js"></script>
+<script src="js/struc2vec/vis.js"></script>
+
 <script>
     function changedSelect() {
-        testForceGraph($('#slpk').find("option:selected").attr('value'), ".mainGraph");
+        ForceGraph($('#slpk').find("option:selected").attr('value'), force);
     }
 </script>
 
@@ -87,8 +90,10 @@
             });
         });
     });
+
+    window.cache = {};
+    force = new ForceDirect(".mainGraph");
 </script>
 
-<script src="js/struc2vec/vis.js"></script>
 
 </html>

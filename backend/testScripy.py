@@ -24,7 +24,7 @@ model1 = Node2vec(G, 10, 10, 2, p=1.0, q=1.0)
 # nx.draw(G.G, pos=model3.vectors, with_labels=True)
 # plt.figure()
 plt.title('origin')
-nx.draw(G.G, with_labels=True)
+nx.draw(G.G, node_size=5, with_labels=False)
 plt.show()
 
 # vec = model1.vectors
