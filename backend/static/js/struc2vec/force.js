@@ -1,3 +1,8 @@
+/**
+ *
+ *
+ * @class ForceDirect
+ */
 class ForceDirect {
   constructor(dom) {
     this.dom = dom;

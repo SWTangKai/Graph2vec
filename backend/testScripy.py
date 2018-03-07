@@ -120,3 +120,6 @@ forceatlas2 = ForceAtlas2(
 #     pylab.draw()
 #     pause(0.1)
 #     print(i)
+
+#%%
+print(1)

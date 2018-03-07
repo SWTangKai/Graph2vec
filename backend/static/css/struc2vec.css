@@ -1,55 +1,55 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body,
 #main {
-    height: 100%;
+  height: 100%;
 }
 
 #content {
-    height: 100%;
+  height: 100%;
 }
 
 .mainGraph {
-    height: 100%;
-    width: 50%;
-    float: left;
+  height: 100%;
+  width: 50%;
+  float: left;
 }
 
 .detailGroup {
-    height: 100%;
-    width: 50%;
-    float: left;
+  height: 100%;
+  width: 50%;
+  float: left;
 }
 
 .container {
-    padding-left: 2%;
-    padding-right: 2%;
-    width: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+  width: 100%;
 }
 
 .detail {
-    width: 50%;
-    float: left;
-    height: 25%;
+  width: 50%;
+  float: left;
+  height: 25%;
 }
 
 .node circle {
-    stroke: white;
-    stroke-width: 1.5px;
-    opacity: 1.0;
+  stroke: white;
+  stroke-width: 1.5px;
+  opacity: 1;
 }
 
 line {
-    stroke: black;
-    stroke-width: 1.5px;
-    stroke-opacity: 1.0;
+  stroke: "#000";
+  stroke-width: 1.5px;
+  stroke-opacity: 1;
 }
 
 #graph {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
