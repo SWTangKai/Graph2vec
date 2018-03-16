@@ -1,4 +1,7 @@
 /* global d3 */
+const log = console.log.bind(console);
+
+function RoundOfNode(center, dataset) {}
 
 function ForceGraph(dataset_name, force) {
   if (dataset_name in window.cache) {
@@ -14,7 +17,8 @@ function ForceGraph(dataset_name, force) {
     d3.json("/api/graph/" + dataset_name, function(err, data) {
       force.render(data);
       window.cache[dataset_name] = data;
-      d3.selectAll(".mainGraph .node").on("click", () => {
+      d3.selectAll(".mainGraph .node").on("click", d => {
+        log(d);
         n_force = new ForceDirect("#one");
         n_force.render(window.cache[dataset_name]);
       });
