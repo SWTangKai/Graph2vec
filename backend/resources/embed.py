@@ -15,10 +15,10 @@ class EmbedItem(Resource):
         print(os.listdir())
 
     def get(self, filename):
-        factor = -1000
+        factor = 1000
         path = self.DATA_PATH + filename + '/' + filename + '.emb'
         data = pd.read_csv(path, sep=' ',
-                           header=-1).sort_values(0).set_index(0)
-        node = [[data.ix[i][1] * factor, data.ix[i][2] * factor]
-                for i in range(1, len(data) + 1)]
+                           header=-1).sort_values(0)
+        node = [{'id': str(int(data.ix[i][0])), "pos":[round(data.ix[i][1] * factor) / factor, round(data.ix[i][2] * factor) / factor]}
+                for i in range(0, len(data))]
         return jsonify(node)

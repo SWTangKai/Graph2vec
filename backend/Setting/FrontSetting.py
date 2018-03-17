@@ -5,11 +5,11 @@ def FrontSetting(app):
     @app.route('/')
     @app.route('/index')
     def index():
-        return render_template('graph.html')
-
-    @app.route('/graph')
-    def graph():
         return render_template('index.html')
+
+    @app.route('/test')
+    def graph():
+        return render_template('test.html')
 
     @app.route('/js/<path:path>')
     def send_js(path):

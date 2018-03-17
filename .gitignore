@@ -1,2 +1,3 @@
 refer/*.pdf
 .ipynb_checkpoints/*
+*/*.pyc
