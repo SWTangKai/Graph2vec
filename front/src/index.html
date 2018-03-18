@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <!-- js lib -->
+    <script src="lib/js/d3.js"></script>
+    <script src="lib/js/d3-tip.js"></script>
+    <script src="lib/js/jquery-3.3.1.js"></script>
+    <script src="lib/js/bootstrap.js"></script>
+    <script src="lib/js/bootstrap-select.js"></script>
+
+
+    <!-- css lib -->
+    <link href="lib/css/bootstrap.css" rel="stylesheet">
+    <link href="lib/css/bootstrap-select.css" rel="stylesheet">
+    <link href="lib/css/bootstrap-theme.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="main">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <h1>Struc2vec</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <button class="btn" type="button">
+                            1
+                        </button>
+                        <button class="btn" type="button">
+                            2
+                        </button>
+                        <button class="btn" type="button">
+                            3
+                        </button>
+                        <button class="btn" type="button">
+                            4
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <select class="selectpicker" id="slpk" data-live-search="true" onchange="changedSelect()"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+
+            </div>
+        </div>
+        <div id="content">
+            <div class="mainGraph"></div>
+            <div class="detailGroup">
+                <div class="detail" id="one">1</div>
+                <div class="detail" id="two">2</div>
+            </div>
+        </div>
+        <div id="app"></div>
+    </div>
+
+</body>
+
+</html>

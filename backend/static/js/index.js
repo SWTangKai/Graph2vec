@@ -1,5 +1,4 @@
 /* global d3 */
-//@ts-check
 
 function isLinked(c, n) {
     return window.links[`${c},${n}`];

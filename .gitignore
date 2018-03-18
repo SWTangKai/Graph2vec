@@ -3,3 +3,4 @@ refer/*.pdf
 **/*.pyc
 **/node_modules/*
 **/*.map
+**/dist/*

@@ -17,7 +17,7 @@ webpack = Webpack()
 
 
 def create_app(application_name=__name__, setting_override=None):
-    app = Flask(__name__)
+    app = Flask(application_name)
     register_extensions(app)
     return app
 
