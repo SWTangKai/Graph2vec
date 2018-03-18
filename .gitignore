@@ -1,3 +1,5 @@
 refer/*.pdf
 .ipynb_checkpoints/*
-*/*.pyc
+**/*.pyc
+**/node_modules/*
+**/*.map

@@ -1,14 +1,22 @@
-/* global d3 */
-//@ts-check
+import * as d3 from "d3";
+import { GraphDataObject } from "./interface";
 
-function isLinked(c, n) {
-    return window.links[`${c},${n}`];
+class Cache {
+    data: {};
+    links: { string: boolean };
 }
 
-function RoundOfNode(center, nodes, wise = 2) {
+const cache = new Cache();
+const cache.links = { string: boolean };
+
+function isLinked(c: string, n: string) {
+    return cache.links[`${c},${n}`];
+}
+
+function RoundOfNode(center: string, nodes: { id: string }[], wise = 2) {
     let nodeQ = [center];
-    let record = [];
-    let acc = { center: true };
+    let record: {}[] = [];
+    let acc: {} = { center: true };
     while (wise--) {
         for (let i = 0; i < nodeQ.length; i++) {
             const element = nodeQ[i];
@@ -26,8 +34,8 @@ function RoundOfNode(center, nodes, wise = 2) {
     return record;
 }
 
-function BindClickEvent(dom, subDom, data) {
-    d3.selectAll(dom).on("click", d => {
+function BindClickEvent(dom: string, subDom: string, data: GraphDataObject) {
+    d3.selectAll(dom).on("click", (d: { id: string }) => {
         log("Clicked:", d);
         RoundOfNode(d.id, data.nodes);
         d3
@@ -44,22 +52,22 @@ function BindClickEvent(dom, subDom, data) {
     });
 }
 
-const CacheData = (name, data) => {
-    window.cache[name] = data;
-    window.links = {};
+const CacheData = (name: string, data: GraphDataObject) => {
+    cache.data[name] = data;
+    cache.links = {};
     data.links.forEach(d => {
-        window.links[`${d.source.index},${d.target.index}`] = true;
+        cache.links[`${d.source.index},${d.target.index}`] = true;
     });
 };
 
-function ForceGraph(dataset_name, force) {
-    window.name = dataset_name;
-    if (dataset_name in window.cache) {
-        // force.render(window.cache[dataset_name]);
-        // BindClickEvent(".mainGraph .node", "#one", window.cache[dataset_name]);
+function ForceGraph(dataset_name: string, graph: any) {
+    let name = dataset_name;
+    if (dataset_name in cache.data) {
+        // graph.render(cache[dataset_name]);
+        // BindClickEvent(".mainGraph .node", "#one", cache[dataset_name]);
     } else {
-        Loader("emb/" + dataset_name, (err, data) => {
-            // force.render(data);
+        Loader("emb/" + dataset_name, (data:GraphDataObject) => {
+            // graph.render(data);
             // BindClickEvent(".mainGraph .node", "#one", data);
             let x = new ScatterGraph(".mainGraph");
             x.render(data);
