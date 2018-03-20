@@ -1,7 +1,7 @@
 const path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var webpack = require("webpack");
-
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 commonConfig = {
     /*入口*/
     entry: {
@@ -39,6 +39,13 @@ commonConfig = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+                })
             }
         ]
     },
@@ -50,6 +57,10 @@ commonConfig = {
         new webpack.HashedModuleIdsPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: ["vendor", "runtime"]
+        }),
+        new ExtractTextPlugin({
+            filename: "[name].[contenthash:5].css",
+            allChunks: true
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.NamedChunksPlugin()

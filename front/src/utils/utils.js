@@ -2,10 +2,17 @@ import * as d3 from "d3";
 
 export const log = console.log.bind(console);
 
-/**
- * @param  {string} path
- * @param  {(value:{})=>{}|void} callback
- */
-export const Loader = (path, callback) => {
-    d3.json("http://localhost:5000/api/" + path, callback);
+export const Loader = {
+    /**
+     * @param  {string} name
+     * @returns Promise
+     */
+    json: name => {
+        return new Promise((resolve, reject) => {
+            d3.json("http://localhost:5000/api/" + name, (error, data) => {
+                if (error) reject(error);
+                resolve(data);
+            });
+        });
+    }
 };
