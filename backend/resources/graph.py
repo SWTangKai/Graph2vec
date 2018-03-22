@@ -10,15 +10,25 @@ class GraphList(Resource):
         return jsonify(os.listdir('data'))
 
 
+class GraphData():
+    def __init__(self, filename):
+        self.DATA_PATH = './data/'
+        self.path = self.DATA_PATH + filename + '/' + filename + '.edgelist'
+        graph = nx.read_edgelist(self.path)
+        df = pd.DataFrame(graph.edges()).rename(
+            columns={0: 'source', 1: 'target'})
+        self.links = list(
+            df.apply(lambda row: {'source': row['source'], 'target': row.target}, axis=1))
+        self.nodes = [{'id': x, 'size': 4} for x in graph.nodes()]
+
+    def GetEdge(self):
+        return {'nodes': self.nodes, "links": self.links}
+
+
 class GraphItem(Resource):
     def __init__(self):
-        self.DATA_PATH = './data/'
+        # self.data = {i: GraphData(i) for i in os.listdir('data')}
+        pass
 
     def get(self, filename):
-        path = self.DATA_PATH + filename + '/' + filename + '.edgelist'
-        G = nx.read_edgelist(path)
-        df = pd.DataFrame(G.edges()).rename(columns={0: 'source', 1: 'target'})
-        links = list(
-            df.apply(lambda row: {'source': row['source'], 'target': row.target}, axis=1))
-        nodes = [{'id': x, 'size': 4} for x in G.nodes()]
-        return jsonify({'nodes': nodes, "links": links})
+        return jsonify(GraphData(filename).GetEdge())

@@ -6,8 +6,8 @@ export default function(headerDom, changeCallBack) {
     });
     var select = $("#slpk");
     select = select.html("");
-    Loader("graph/", (error, graphNameList) => {
-        log("INFO", graphNameList);
+    Loader.json("graph/").then(graphNameList => {
+        log("INFO: ", graphNameList);
         graphNameList.forEach(e => {
             select.append("<option value='" + e + "'>" + e + "</option>");
         });
@@ -17,11 +17,11 @@ export default function(headerDom, changeCallBack) {
         });
     });
 
-    d3.select(headerDom).on("change", () => {
+    d3.select("#slpk").on("change", () => {
         let dataset_name = $("#slpk")
             .find("option:selected")
             .attr("value");
         log("SELECT: ", dataset_name);
-        changeCallBack(name);
+        changeCallBack(dataset_name);
     });
 }

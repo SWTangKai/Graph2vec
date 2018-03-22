@@ -8,7 +8,7 @@ body,
     height: 100%;
 }
 
-.mainGraph {
+#mainGraph {
     height: 100%;
     width: 50%;
     float: left;
@@ -20,7 +20,7 @@ body,
     float: left;
 }
 
-.container {
+.header {
     padding-left: 2%;
     padding-right: 2%;
     width: 100%;

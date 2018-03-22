@@ -11,7 +11,7 @@ const devConfig = {
         filename: "[name].[hash:8].js"
     },
     devServer: {
-        port: 8080,
+        port: 8089,
         contentBase: path.join(__dirname, "./dist"),
         historyApiFallback: true,
         headers: { "Access-Control-Allow-Origin": "*" }
