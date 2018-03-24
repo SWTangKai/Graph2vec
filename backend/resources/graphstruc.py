@@ -67,7 +67,7 @@ class GraphStruData():
                     record.append((c, n))
         return list(set(record))
 
-    def GetSubStruc(self, node):
+    def GetSubStrucOf(self, node):
         counter = Counter()
         edges = self.FindSubStruc(node)
         for e in edges:
@@ -83,6 +83,14 @@ class GraphStruData():
               for n in nodes]
         es = [{'source': e[0], 'target':e[1]} for e in edges]
         return {'links': es, 'nodes': ns}
+
+    def SubStrucGraph(self):
+        pass
+
+    def GetSubStruc(self):
+        graphs = self.SubStrucGraph()
+
+        return graphs
 
 
 class GraphStruItem(Resource):
