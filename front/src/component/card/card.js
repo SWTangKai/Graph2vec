@@ -1,25 +1,28 @@
 import DetailGraph from "../Graphs/DetailGraph";
-
+import "./card.css";
 class Card {
-    /**
-     * @param  {string} domID
-     */
-    constructor(domID) {
-        console.log(domID);
-        this.id = domID;
-        this.main = this.createEle("div", "post-content", "");
-        let graph = this.createEle("div", "detail-Graph", domID);
-        let info = this.createEle("div", "detail-info", "");
-        this.main.append(graph);
-        this.main.append(info);
+    constructor(ID) {
+        this.main = this.createEle(
+            "div",
+            "detail-item my-2 mx-auto p-relative bg-white shadow-1 blue-hover",
+            ""
+        );
+        this.main.appendChild(
+            this.createEle("div", "detail-graph", "detail-" + ID)
+        );
+        this.main.appendChild(
+            this.createEle("div", "detail-info", "info-" + ID)
+        );
+        this.graphID = "#detail-" + ID;
+        this.infoID = "#info-" + ID;
     }
 
-    append() {
+    dom() {
         return this.main;
     }
 
-    render(data, info) {
-        let detailGraph = new DetailGraph("#" + this.id);
+    render(data) {
+        let detailGraph = new DetailGraph(this.graphID);
         detailGraph.render(data);
     }
 
