@@ -19,7 +19,9 @@ commonConfig = {
         alias: {
             pages: path.join(__dirname, "src/pages"),
             component: path.join(__dirname, "src/component"),
-            router: path.join(__dirname, "src/router")
+            router: path.join(__dirname, "src/router"),
+            Utils: path.resolve(__dirname, "src/utils"),
+            Graphs: path.resolve(__dirname, "src/Graphs")
         }
     },
     module: {

@@ -1,6 +1,8 @@
 import App from "./App";
 import { $, jquery } from "jquery";
 
+import "./index.css";
+
 function render() {
     return App(document.body.querySelector("#container"));
 }

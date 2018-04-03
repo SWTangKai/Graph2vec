@@ -12,16 +12,21 @@ class GraphStruList(Resource):
         return jsonify(os.listdir('data'))
 
 
+import json
+
+
 class GraphStruData():
     def __init__(self, filename):
         self.DATA_PATH = './data/'
+        self.name = filename
+
+    def reconstruct(self):
+        filename = self.name
         graphPath = self.DATA_PATH + filename + '/' + filename + '.edgelist'
         embPath = self.DATA_PATH + filename + '/' + filename + '.emb'
-
         if not os.path.isfile(graphPath) or not os.path.isfile(embPath):
             self.links = None
             self.nodes = None
-
         self.graph = nx.read_edgelist(graphPath)
         df = pd.DataFrame(self.graph.edges()).rename(
             columns={0: 'source', 1: 'target'})
@@ -44,53 +49,72 @@ class GraphStruData():
         c = emb.loc[emb['id'] == n, 'label'].values[0]
         return {'id': ID, "pos": pos, 'c': int(c), 'size': 4}
 
-    def GetEdge(self):
-        return {'nodes': self.nodes, "links": self.links}
+    def _get(self, type):
+        with open(self.DATA_PATH + self.name + '/' + self.name + '.' + type, 'r') as f:
+            return json.load(f)
 
-    def FindSubStruc(self, center, wise=2):
-        """FindSubStruc
+    def GetOriGraph(self):
+        return self._get('graph')
 
-        Arguments:
-            center {string} -- [node]
+    # def GetMainGraph(self):
+    #     return self._get('mainGraph')
 
-        Keyword Arguments:
-            wise {int} -- [number of bfs layer] (default: {2})
-        """
-        record = []
-        queue = [center]
-        for _ in range(wise):
-            for i in list(queue):
-                c = queue.pop(0)
-                neighbors = self.graph.neighbors(c)
-                for n in neighbors:
-                    queue.append(n)
-                    record.append((c, n))
-        return list(set(record))
+    def GetSubStrucOf(self, ID):
+        return self._get(ID)
 
-    def GetSubStrucOf(self, node):
-        counter = Counter()
-        edges = self.FindSubStruc(node)
-        for e in edges:
-            counter[e[0]] += 1
-            counter[e[1]] += 1
-        edges = [e for e in edges if counter[e[0]] != 1 and counter[e[1]] != 1]
-        nodes = []
-        for e in edges:
-            nodes.append(e[0])
-            nodes.append(e[1])
-        nodes = list(set(nodes))
-        ns = [{'id': n, 'c': int(self.emb.loc[self.emb['id'] == n, 'label'].values[0])}
-              for n in nodes]
-        es = [{'source': e[0], 'target':e[1]} for e in edges]
-        return {'links': es, 'nodes': ns}
 
-    def SubStrucGraph(self):
-        pass
+class GraphData:
+    def __init__(self, filename):
+        self.name = filename
+        path = './data/' + filename + '/' + filename
+        self.graph = nx.read_edgelist(path + '.edgelist')
 
-    def GetSubStruc(self):
-        graphs = self.SubStrucGraph()
+    def __degree(self):
+        return self.graph.degree()
 
-        return graphs
+    def __clustering(self):
+        return nx.clustering(self.graph.to_undirected(), self.graph.nodes())
+
+    def __degree_centrelity(self):
+        return nx.degree_centrality(self.graph)
+
+    def __betweness_centrality(self):
+        """ 计算介数中心性0x007"""
+        return nx.betweenness_centrality(self.graph, None, True)
+
+    def __closeness_centrality(self):
+        """ 计算接近度中心性0x008"""
+        return nx.closeness_centrality(self.graph)
+
+    def __eigenvector_centrality(self):
+        """ 计算特征向量中心性0x009"""
+        return nx.eigenvector_centrality_numpy(self.graph)
+
+    def Graph_info(self):
+        KEEP = 3
+        degree = self.__degree()
+        clustering = self.__clustering()
+        degree_centrelity = self.__degree_centrelity()
+        betweness_centrality = self.__betweness_centrality()
+        closeness_centrality = self.__closeness_centrality()
+        eigenvector_centrality = self.__eigenvector_centrality()
+        desity = round(nx.density(self.graph), 6)
+        return {"ID": self.name,
+                "degree_centrelity": self.AvgGegree(degree_centrelity),
+                "clustering": self.AvgGegree(clustering),
+                "betweness_centrality": self.AvgGegree(betweness_centrality),
+                "degree": self.AvgGegree(degree),
+                "closeness_centrality": self.AvgGegree(closeness_centrality),
+                "eigenvector_centrality": self.AvgGegree(eigenvector_centrality),
+                "density": desity}
+
+    def AvgGegree(self, ds):
+        count = 0
+        sums = 0
+        for i in ds:
+            count += 1
+            sums += ds[i]
+        return round(sums / count, 6)
 
 
 class GraphStruItem(Resource):
@@ -98,7 +122,7 @@ class GraphStruItem(Resource):
         pass
 
     def get(self, filename):
-        return jsonify(GraphStruData(filename).GetEdge())
+        return jsonify(GraphData(filename).Graph_info())
 
 
 class SubStruItem(Resource):

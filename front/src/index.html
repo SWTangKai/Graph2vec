@@ -17,18 +17,24 @@
     <link href="lib/css/bootstrap-theme.css" rel="stylesheet">
     <link href="lib/css/owl.carousel.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
     <div id="main">
         <div class="header">
+
             <div class="row">
-                <div class="span12">
-                    <h1>Struc2vec</h1>
+                <div class="col-md-4 ">
+                    <div class="span12">
+                        <h1>Struc2vec</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <select class="selectpicker" id="slpk" data-live-search="true"></select>
+                    </div>
+                </div>
                 <div class="col-md-4">
                     <div class="btn-group">
                         <button class="btn" type="button">
@@ -45,20 +51,13 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="btn-group">
-                        <select class="selectpicker" id="slpk" data-live-search="true"></select>
-                    </div>
-                </div>
-                <div class="col-md-4 ">
-                </div>
 
             </div>
         </div>
         <div id="content">
+            <div id="sidebar"></div>
             <div id="mainGraph"></div>
             <div id="detail-view">
-
             </div>
         </div>
     </div>

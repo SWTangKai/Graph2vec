@@ -32,6 +32,7 @@ body {
     width: 100%;
     height: 50%;
     border: rebeccapurple solid 1px;
+    background-color: azure;
 }
 
 #detail-view .detail-info {
@@ -45,4 +46,28 @@ body {
     height: 100%;
     overflow: hidden;
     border-radius: 1px;
+}
+
+#sidebar {
+    width: 10%;
+    height: 100%;
+    margin: 0px;
+    float: left;
+    background-color: #efefef;
+}
+
+ul {
+    float: left;
+    width: auto;
+    height: auto;
+}
+
+#sidebar ul {
+    float: left;
+    width: auto;
+    height: auto;
+}
+
+#sidebar ul li {
+    display: inline-block;
 }
