@@ -29,11 +29,6 @@ class Card {
     }
 }
 
-["1", "2", "3", "4", "5"].map(d => {
-    let c = new Card(d);
-    document.querySelector("#detail-view").appendChild(c.dom());
-});
-
 $("#detail-view").owlCarousel({
     items: 3,
     itemsDesktop: [1199, 2],
@@ -42,4 +37,15 @@ $("#detail-view").owlCarousel({
     pagination: false,
     navigationText: false
     // autoPlay: true
+});
+// $(".owl-carousel")
+//     .trigger("add.owl.carousel", [$("<div>bar</div>"), 0])
+//     .trigger("refresh.owl.carousel");
+["1", "2", "3", "4", "5"].map(d => {
+    let c = new Card(d);
+    let content = c.dom().outerHTML;
+    console.log(content);
+    $("#detail-view")
+        .data("owl-carousel")
+        .addItem(content);
 });

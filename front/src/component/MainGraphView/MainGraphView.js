@@ -6,7 +6,7 @@ export default class {
     constructor(domName) {
         this.domName = domName;
         this.dom = document.querySelector(this.domName);
-        this.graph = new ForceDirect("#mainGraph");
+        this.graph = new ForceDirect(domName);
     }
 
     render(data) {

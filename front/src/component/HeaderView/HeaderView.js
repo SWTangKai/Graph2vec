@@ -4,6 +4,8 @@ import "./header.css";
 
 export default function(headerDom, changeCallBack) {
     $(".selectpicker").selectpicker({
+        style: "btn-default",
+        liveSearch: true,
         noneSelectedText: "Please select one dataset" //默认显示内容
     });
     var select = $("#slpk");
@@ -13,6 +15,7 @@ export default function(headerDom, changeCallBack) {
         graphNameList.forEach(e => {
             select.append("<option value='" + e + "'>" + e + "</option>");
         });
+        $(".selectpicker").selectpicker("val", "");
         $(".selectpicker").selectpicker("refresh");
         $(window).on("load", () => {
             $(".selectpicker").selectpicker("refresh");

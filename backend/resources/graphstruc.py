@@ -130,4 +130,5 @@ class SubStruItem(Resource):
         pass
 
     def get(self, filename, ID):
+
         return jsonify(GraphStruData(filename).GetSubStrucOf(ID))

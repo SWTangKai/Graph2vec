@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+##
 
+from flask import Flask
 from flask_restful import Api, Resource
 from flask_webpack import Webpack
 from flask_cors import CORS
@@ -9,7 +10,7 @@ import datetime
 
 from Setting.FrontSetting import FrontSetting
 from Setting.ApiSetting import ApiSetting
-
+from flask_pymongo import PyMongo
 from config.settings import *
 
 api = Api()
@@ -31,8 +32,17 @@ print(WEBPACK_MANIFEST_PATH)
 
 app = Flask(__name__)
 api = Api(app)
+
+app.config.update(
+    MONGO_HOST='localhost',
+    MONGO_PORT=27017,
+    MONGO_DBNAME='struc2vec'
+)
+
+mongo = PyMongo(app)
+
 FrontSetting(app)
-ApiSetting(api)
+ApiSetting(api, mongo)
 CORS(app)
 
 if __name__ == '__main__':

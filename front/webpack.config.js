@@ -1,5 +1,6 @@
-const merge = require("webpack-merge");
+/*jshint esversion: 6 */
 
+const merge = require("webpack-merge");
 const webpack = require("webpack");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
