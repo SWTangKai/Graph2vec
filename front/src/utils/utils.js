@@ -16,3 +16,24 @@ export const Loader = {
         });
     }
 };
+
+// export const ColorManage = {
+//     color: d3.scaleOrdinal(d3.schemeCategory20),
+//     Get: function(idx) {
+//         return this.color(idx);
+//     }
+// };
+
+export class ColorManage {
+    constructor() {
+        if (ColorManage.prototype.Instance === undefined) {
+            this.color = d3.scaleOrdinal(d3.schemeCategory20);
+            ColorManage.prototype.Instance = this;
+        }
+        return ColorManage.prototype.Instance;
+    }
+
+    Get(idx) {
+        return this.color(idx);
+    }
+}

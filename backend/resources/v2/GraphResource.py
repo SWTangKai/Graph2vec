@@ -11,7 +11,7 @@ class GraphV2List(Resource):
         return jsonify(self.mongo.db.collection_names())
 
 
-class SubItem(Resource):
+class GraphsItem(Resource):
     def __init__(self, mongo):
         self.mongo = mongo
         self.collection_names = mongo.db.collection_names()

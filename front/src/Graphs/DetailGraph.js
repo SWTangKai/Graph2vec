@@ -1,4 +1,5 @@
 /*jslint es6 */
+import { ColorManage } from "Utils/utils";
 /**
  *
  *
@@ -48,15 +49,15 @@ class DetailGraph {
             .enter()
             .append("g")
             .attr("class", "node");
+        let color = new ColorManage();
 
-        let color = d3.scaleOrdinal(d3.schemeCategory20);
         node
             .append("circle")
             .attr("r", d => {
                 return d.id === ID ? 9 : 5;
             })
             .style("fill", d => {
-                return color(d.c);
+                return color.Get(d.c);
             });
 
         function ticked() {

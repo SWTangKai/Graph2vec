@@ -13,6 +13,11 @@ export default function(container) {
     let mainGraphView = new MainGraphView("#main-graph");
     let detailView = new DetailView("#detail-view");
     let sidebar = new SidebarView("#sidebar");
+
+    let subView = new SubView("#sub-view");
+    let strucInfoView = new StrucInfoView("#struc-info-view");
+    let nodeInfoView = new NodeInfoView("#node-info-view");
+
     let header = new HeaderView("#header", dataset_name => {
         Loader.json("graph-struc/" + dataset_name + "/mainGraph").then(
             mainData => {
@@ -22,14 +27,13 @@ export default function(container) {
         );
         Loader.json("graph-struc/" + dataset_name).then(infoData => {
             sidebar.render(infoData);
+            nodeInfoView.render(infoData);
         });
     });
-    let subView = new SubView("#sub-view");
-    let strucInfoView = new StrucInfoView("#struc-info-view");
-    let nodeInfoView = new NodeInfoView("#node-info-view");
+
     subView.render(1);
     strucInfoView.render(1);
-    nodeInfoView.render(1);
+
     let element;
     return element;
 }

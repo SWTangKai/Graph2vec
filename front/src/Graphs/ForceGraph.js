@@ -1,5 +1,5 @@
 /*jslint es6 */
-
+import { ColorManage } from "Utils/utils";
 /**
  *
  *
@@ -52,12 +52,13 @@ class ForceGraph {
 
         // .on("mouseover", mouseOverFunction)
         // .on("mouseout", mouseOutFunction)
-        let color = d3.scaleOrdinal(d3.schemeCategory20);
+
+        let color = new ColorManage();
         node
             .append("circle")
             .attr("r", nodeRadius)
             .style("fill", d => {
-                return color(d.c);
+                return color.Get(d.c);
             })
             .call(
                 d3

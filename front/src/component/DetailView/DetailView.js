@@ -3,6 +3,7 @@ import { Loader, log } from "Utils/utils";
 import Card from "./Card/Card";
 
 import "./DetailView.css";
+import { ColorManage } from "../../utils/utils";
 
 export default class {
     constructor(domName) {
@@ -54,6 +55,10 @@ export default class {
         let card = new Card("" + data["id"]);
         let content = card.dom().outerHTML;
         this.owl.data("owl-carousel").addItem(content);
+        let color = new ColorManage();
+        color = color.Get(parseInt(data["id"]));
+        document.querySelector("#" + ID).style["border-bottom"] =
+            color + " solid 3px";
         card.render(data, "");
     }
 }
