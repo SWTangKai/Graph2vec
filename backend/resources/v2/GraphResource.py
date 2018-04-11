@@ -34,3 +34,15 @@ class GraphInfo(Resource):
             col = self.mongo.db[filename]
             query = col.find_one({'type': 'info'})
             return jsonify(query['data'])
+
+
+class SubGraph(Resource):
+    def __init__(self, mongo):
+        self.mongo = mongo
+        self.collection_names = mongo.db.collection_names()
+
+    def get(self, filename, ID):
+        if filename in self.collection_names:
+            col = self.mongo.db[filename]
+            query = col.find_one({'type': 'sub_group_edge', "group_id": ID})
+            return jsonify(query['nodes'])

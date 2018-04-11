@@ -2,5 +2,10 @@
     float: left;
     width: 15%;
     height: 50%;
-    border: #2b539ebb solid;
+    /* border: #2b539ebb solid; */
+}
+
+.ID-header {
+    padding-left: 10px;
+    font-size: 19px;
 }

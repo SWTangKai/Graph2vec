@@ -7,3 +7,16 @@ body,
 #content {
     height: 95%;
 }
+
+ul,
+ol {
+    padding: 0;
+    position: relative;
+    left: 0;
+    overflow: hidden;
+}
+
+li {
+    border-left: red solid 3px;
+    margin-bottom: 1px;
+}

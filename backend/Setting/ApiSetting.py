@@ -20,3 +20,5 @@ def ApiSetting(api, dbInstance):
                      resource_class_kwargs={'mongo': dbInstance})
     api.add_resource(GraphResource.GraphInfo, '/api/v2/graph-struc/<string:filename>',
                      resource_class_kwargs={'mongo': dbInstance})
+    api.add_resource(GraphResource.SubGraph, '/api/v2/graph-struc/<string:filename>/sub/<ID>',
+                     resource_class_kwargs={'mongo': dbInstance})
