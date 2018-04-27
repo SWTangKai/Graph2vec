@@ -49,6 +49,43 @@ export default function(container) {
                             log(e);
                         });
                 });
+                Loader.json("graph-struc/" + dataset_name + "/subInfo").then(
+                    sub_info => {
+                        let info = {
+                            name: "kind info",
+                            kind: [],
+                            xAxix: [],
+                            data: []
+                        };
+                        sub_info.forEach(d => {
+                            info.kind.push("bar-" + d["id"]);
+                            let b = [];
+                            for (let x in d.count) {
+                                b.push(x);
+                            }
+                            // cal union
+                            info.xAxix = Array.from(
+                                new Set(info.xAxix.concat(b))
+                            );
+                        });
+                        info.xAxix = info.xAxix.sort();
+                        let len = info.xAxix.length;
+                        sub_info.forEach(d => {
+                            let ar = Array(len).fill(0);
+                            for (let x in d.count) {
+                                ar[info.xAxix.indexOf(x)] = d.count[x];
+                            }
+                            info.data.push({
+                                kind: "bar-" + d["id"],
+                                data: ar
+                            });
+                        });
+
+                        window.sub_info = sub_info;
+                        window.info = info;
+                        strucInfoView.render([info]);
+                    }
+                );
             }
         );
         Loader.json("graph-struc/" + dataset_name).then(infoData => {
@@ -58,7 +95,6 @@ export default function(container) {
     });
 
     // subView.render(1);
-    strucInfoView.render(1);
 
     let element;
     return element;

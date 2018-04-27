@@ -11,10 +11,12 @@ class StrucInfoView {
     render(data) {
         // this.dom.innerHTML = "Structure Information";
         // 基于准备好的dom，初始化echarts实例
-
-        [1, 2, 3, 4].forEach(d => {
-            this.OneChart(this.CreateDom(this.dom));
+        let charts = [];
+        console.log("DATA:", data);
+        data.forEach(d => {
+            charts.push(this.OneChart(d, this.CreateDom(this.dom)));
         });
+        echarts.connect(charts);
     }
 
     CreateDom(parent) {
@@ -24,22 +26,28 @@ class StrucInfoView {
         return item;
     }
 
-    OneChart(dom) {
+    OneChart(data, dom) {
         let myChart = echarts.init(dom);
-        let xAxisData = [];
-        let data1 = [];
-        let data2 = [];
-        for (let i = 0; i < 100; i++) {
-            xAxisData.push("类目" + i);
-            data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-            data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-        }
+        let xAxisData = data.xAxix;
 
+        let title = data.name;
+        let kind = data["kind"];
+        let datas = data["data"];
+        let serise = [];
+        datas.forEach(d => {
+            return serise.push({
+                name: d.kind,
+                type: "bar",
+                data: d.data,
+                animationDelay: function(idx) {
+                    return idx * 10;
+                }
+            });
+        });
         let option = {
-            title: { text: "柱状图动画延迟" },
-            legend: { data: ["bar", "bar2"], align: "left" },
+            title: { text: title },
+            legend: { data: kind, align: "left" },
             toolbox: {
-                // y: 'bottom',
                 feature: {
                     magicType: { type: ["stack", "tiled"] },
                     dataView: {},
@@ -53,32 +61,16 @@ class StrucInfoView {
                 splitLine: { show: false }
             },
             yAxis: {},
-            series: [
-                {
-                    name: "bar",
-                    type: "bar",
-                    data: data1,
-                    animationDelay: function(idx) {
-                        return idx * 10;
-                    }
-                },
-                {
-                    name: "bar2",
-                    type: "bar",
-                    data: data2,
-                    animationDelay: function(idx) {
-                        return idx * 10 + 100;
-                    }
-                }
-            ],
+            series: serise,
             animationEasing: "elasticOut",
             animationDelayUpdate: function(idx) {
                 return idx * 5;
             }
         };
-
+        console.log(option);
         // 绘制图表
         myChart.setOption(option);
+        return myChart;
     }
 }
 

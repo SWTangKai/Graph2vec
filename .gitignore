@@ -4,3 +4,4 @@ refer/*.pdf
 **/node_modules/*
 **/*.map
 **/dist/*
+refer/paper.md

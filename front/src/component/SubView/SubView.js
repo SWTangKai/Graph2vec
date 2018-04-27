@@ -1,4 +1,6 @@
-let echarts = require("echarts");
+// let echarts = require("echarts");
+import echarts from "echarts";
+
 import DetailGraph from "Graphs/DetailGraph";
 import "./SubView.css";
 

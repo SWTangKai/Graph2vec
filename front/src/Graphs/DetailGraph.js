@@ -9,7 +9,7 @@ class DetailGraph {
     constructor(domName) {
         this.domName = domName;
         this.width = document.querySelector(domName).clientWidth;
-        this.height = document.querySelector(domName).clientWidth;
+        this.height = document.querySelector(domName).clientHeight;
     }
 
     render(data, ID) {
