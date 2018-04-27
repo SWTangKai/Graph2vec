@@ -3,31 +3,40 @@ import "./NodeInfoView.css";
 class NodeInfoView {
     constructor(domName) {
         this.domName = domName;
-        this.dom = document.querySelector(domName);
+        this.dom = document.querySelector(this.domName);
     }
 
     render(data) {
-        let ul = document.createElement("ul");
+        this.dom.innerHTML = "";
+        let div = document.createElement("div");
+        div.className = "panel panel-primary" ;
 
+        let ul = document.createElement("ul");
+        ul.className = "list-group";
         for (let k in data) {
             if (k === "ID") {
-                this.createHeader("Node: " + data[k]);
+                div.appendChild(this.createHeader("Node: " + data[k]));
                 continue;
             }
-            console.log(k);
             let li = document.createElement("li");
-            li.appendChild(document.createTextNode(k + "\t:\t" + data[k]));
+            li.className = "list-group-item";
+            let span = document.createElement("span");
+            span.className = "badge";
+            span.innerHTML = data[k];
+            li.innerHTML = k;
+            li.appendChild(span);
             ul.appendChild(li);
         }
-
-        this.dom.appendChild(ul);
+        div.appendChild(ul);
+        this.dom.appendChild(div);
     }
 
     createHeader(name) {
         let dom = document.createElement("div");
-        dom.setAttribute("class", "ID-header");
+        dom.setAttribute("class", "panel-heading");
         dom.appendChild(document.createTextNode(name));
-        this.dom.appendChild(dom);
+        //this.dom.appendChild(dom);
+        return dom;
     }
 }
 

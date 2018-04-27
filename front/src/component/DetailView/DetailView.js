@@ -3,7 +3,7 @@ import { Loader, log } from "Utils/utils";
 import Card from "./Card/Card";
 
 import "./DetailView.css";
-import { ColorManage } from "../../utils/utils";
+import { ColorManage } from "Utils/utils";
 
 export default class {
     constructor(domName) {
