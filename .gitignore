@@ -1,7 +1,8 @@
-refer/*.pdf
+refer/*/**
 .ipynb_checkpoints/*
 **/*.pyc
 **/node_modules/*
 **/*.map
 **/dist/*
 refer/paper.md
+**/*.pdf
