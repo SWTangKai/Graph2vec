@@ -3,30 +3,26 @@ import { Loader, log } from "../../utils/utils";
 import "./header.css";
 
 export default function(headerDom, changeCallBack) {
-    $(".selectpicker").selectpicker({
-        style: "btn-default",
-        liveSearch: true,
-        noneSelectedText: "Please select one dataset" //默认显示内容
-    });
-    var select = $("#slpk");
-    select = select.html("");
-    Loader.json("graph/").then(graphNameList => {
-        log("INFO: ", graphNameList);
-        graphNameList.forEach(e => {
-            select.append("<option value='" + e + "'>" + e + "</option>");
-        });
-        $(".selectpicker").selectpicker("val", "");
-        $(".selectpicker").selectpicker("refresh");
-        $(window).on("load", () => {
-            $(".selectpicker").selectpicker("refresh");
-        });
-    });
 
-    d3.select("#slpk").on("change", () => {
-        let dataset_name = $("#slpk")
-            .find("option:selected")
-            .attr("value");
-        log("SELECT: ", dataset_name);
-        changeCallBack(dataset_name);
-    });
+    let dataset_dropdown_menu = $("#dataset-dropdown-menu");
+    Loader.json("graph/").then(graphNameList => {
+        graphNameList.forEach(e => {
+            dataset_dropdown_menu.append("<li><a href='#' id='" + e +"' value = '" + e + "'>" + e + "</a><li>");
+            $("#" + e).click(function(){
+                changeCallBack($(this).attr("value"))
+            })
+        });
+    })
+
+    let select_dropdown_menu = $("#select-dropdown-menu"),
+    select_group = ['s1','s2','s3','s4'];
+
+    select_group.forEach(e => {
+        select_dropdown_menu.append("<li><a href='#' id='" + e +"' value = '" + e + "'>" + e + "</a><li>");
+        $("#" + e).click(function(){
+            changeCallBack($(this).attr("value"))
+        })
+    })
+
+
 }

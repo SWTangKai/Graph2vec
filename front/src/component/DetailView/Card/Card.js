@@ -1,5 +1,5 @@
-import DetailGraph from "Graphs/DetailGraph";
-
+//import DetailGraph from "Graphs/DetailGraph";
+import Ssankey from "Graphs/Ssankey";
 import "./Card.css";
 
 class Card {
@@ -25,8 +25,10 @@ class Card {
     }
 
     render(data) {
-        let detailGraph = new DetailGraph(this.graphID);
-        detailGraph.render(data, this.ID);
+        //let detailGraph = new DetailGraph(this.graphID);
+        //detailGraph.render(data, this.ID);
+        let ssankey = new Ssankey(this.graphID);
+        ssankey.render(data, this.ID);
     }
 
     createEle(type, className, id) {

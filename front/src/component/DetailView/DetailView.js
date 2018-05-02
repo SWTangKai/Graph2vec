@@ -55,8 +55,13 @@ export default class {
         let card = new Card("" + data["id"]);
         let content = card.dom().outerHTML;
         this.owl.data("owl-carousel").addItem(content);
+        let nodec = ''
+        data.nodes.forEach(function(d){
+            if(d['id'] == data['id'])
+                nodec = d['c']
+        })
         let color = new ColorManage();
-        color = color.Get(parseInt(data["id"]));
+        color = color.Get(nodec);
         document.querySelector("#" + ID).style["border-bottom"] =
             color + " solid 3px";
         card.render(data, "");
