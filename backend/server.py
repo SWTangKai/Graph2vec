@@ -36,7 +36,7 @@ api = Api(app)
 app.config.update(
     MONGO_HOST='localhost',
     MONGO_PORT=27017,
-    MONGO_DBNAME='struc2vec'
+    MONGO_DBNAME='struc2vec-res'
 )
 
 mongo = PyMongo(app)

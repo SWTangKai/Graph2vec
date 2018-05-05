@@ -19,8 +19,12 @@ class GraphsItem(Resource):
     def get(self, filename, ID):
         if filename in self.collection_names:
             col = self.mongo.db[filename]
-            query = col.find_one({'type': ID})
-            return jsonify(query['data'])
+            if ID == 'subStruc':
+                query = col.find({'type': 'remarkable_group'})
+                return jsonify(list(map(lambda i: i['data'], query)))
+            else:
+                query = col.find_one({'type': ID})
+                return jsonify(query['data'])
         return 'Error'
 
 
@@ -44,5 +48,7 @@ class SubGraph(Resource):
     def get(self, filename, ID):
         if filename in self.collection_names:
             col = self.mongo.db[filename]
-            query = col.find_one({'type': 'sub_group_edge', "group_id": ID})
-            return jsonify(query['nodes'])
+            print(col)
+            query = col.find_one(
+                {'type': 'sub_groups_edge', "group_id": ID})
+            return jsonify({"nodes": query['nodes'], "links": query['edges']})
