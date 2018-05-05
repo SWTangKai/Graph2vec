@@ -11,7 +11,6 @@ class SubView {
 
     render(data) {
         this.dom.innerHTML = "Sub Graph";
-        debugger;
         let detailCircleGraph = new DetailGraph(this.domName);
         detailCircleGraph.render(data, -1);
     }
