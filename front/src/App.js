@@ -30,7 +30,7 @@ export default function(container) {
                     let ID = d.id;
                     Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
                         .then(sub_graph => {
-                            log(dataset_name,sub_graph,ID);
+                            log(sub_graph);
                             window.sub = sub_graph;
                             let node = {};
                             sub.forEach(e => {
