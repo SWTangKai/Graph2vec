@@ -25,29 +25,28 @@ export default function(container) {
                 detailView.render(dataset_name);
                 mainGraphView.bindEvent("#main-graph .node", "click", d => {
                     let ID = d.id;
-                    Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
-                        .then(sub_graph => {
-                            log(sub_graph);
-                            window.sub = sub_graph;
-                            let node = {};
-                            sub.forEach(e => {
-                                node[e.source] = 1;
-                                node[e.target] = 1;
-                            });
-                            let n = [];
-                            for (let i in node) {
-                                n.push({
-                                    id: i
-                                });
-                            }
-                            subView.render({
-                                nodes: n,
-                                links: sub_graph
-                            });
-                        })
-                        .error(e => {
-                            log(e);
+                    Loader.json(
+                        "graph-struc/" + dataset_name + "/sub/" + ID
+                    ).then(sub_graph => {
+                        log(("ID:", ID));
+                        log(("SUBGRAPH:", sub_graph));
+                        window.sub = sub_graph;
+                        let node = {};
+                        sub.forEach(e => {
+                            node[e.source] = 1;
+                            node[e.target] = 1;
                         });
+                        let n = [];
+                        for (let i in node) {
+                            n.push({
+                                id: i
+                            });
+                        }
+                        subView.render({
+                            nodes: n,
+                            links: sub_graph
+                        });
+                    });
                 });
                 Loader.json("graph-struc/" + dataset_name + "/subInfo").then(
                     sub_info => {

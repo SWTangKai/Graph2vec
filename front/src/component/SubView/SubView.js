@@ -1,6 +1,4 @@
-// let echarts = require("echarts");
 import echarts from "echarts";
-
 import DetailGraph from "Graphs/DetailGraph";
 import "./SubView.css";
 
@@ -11,7 +9,6 @@ class SubView {
     }
 
     render(data) {
-        
         this.dom.innerHTML = "Sub Graph";
 
         let detailGraph = new DetailGraph(this.domName);
