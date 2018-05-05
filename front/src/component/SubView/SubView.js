@@ -2,6 +2,7 @@
 import echarts from "echarts";
 
 import DetailGraph from "Graphs/DetailGraph";
+import DetailCircleGraph from "Graphs/DetailCircleGraph";
 import "./SubView.css";
 
 class SubView {
@@ -14,8 +15,8 @@ class SubView {
         
         this.dom.innerHTML = "Sub Graph";
 
-        let detailGraph = new DetailGraph(this.domName);
-        detailGraph.render(data, -1);
+        let detailCircleGraph = new DetailCircleGraph(this.domName);
+        detailCircleGraph.render(data, -1);
 
         // var myChart = echarts.init(this.dom);
         // // 绘制图表

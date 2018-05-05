@@ -6,17 +6,20 @@ import SidebarView from "./component/SidebarView/SidebarView";
 import SubView from "./component/SubView/SubView";
 import StrucInfoView from "./component/StrucInfoView/StrucInfoView";
 import NodeInfoView from "./component/NodeInfoView/NodeInfoView";
+import TreeGraphView from "./component/TreeGraphView/TreeGraphView"
 /**
  * @param  {Document} container
  */
 export default function(container) {
+    let sidebar = new SidebarView("#sidebar");
     let mainGraphView = new MainGraphView("#main-graph");
     let detailView = new DetailView("#detail-view");
-    let sidebar = new SidebarView("#sidebar");
-
+    
+    let treeGraphView = new TreeGraphView("#tree-graph")
+    let nodeInfoView = new NodeInfoView("#node-info-view");
     let subView = new SubView("#sub-view");
     let strucInfoView = new StrucInfoView("#struc-info-view");
-    let nodeInfoView = new NodeInfoView("#node-info-view");
+    
 
     let header = new HeaderView("#header", dataset_name => {
         Loader.json("graph-struc/" + dataset_name + "/mainGraph").then(
@@ -27,7 +30,7 @@ export default function(container) {
                     let ID = d.id;
                     Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
                         .then(sub_graph => {
-                            log(sub_graph);
+                            log(dataset_name,sub_graph,ID);
                             window.sub = sub_graph;
                             let node = {};
                             sub.forEach(e => {
