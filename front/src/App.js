@@ -1,4 +1,7 @@
-import { Loader, log } from "Utils/utils";
+import {
+    Loader,
+    log
+} from "Utils/utils";
 import HeaderView from "./component/HeaderView/HeaderView";
 import MainGraphView from "./component/MainGraphView/MainGraphView";
 import DetailView from "./component/DetailView/DetailView";
@@ -10,7 +13,7 @@ import TreeGraphView from "./component/TreeGraphView/TreeGraphView";
 /**
  * @param  {Document} container
  */
-export default function(container) {
+export default function (container) {
     let sidebar = new SidebarView("#sidebar");
     let mainGraphView = new MainGraphView("#main-graph");
     let detailView = new DetailView("#detail-view");
@@ -19,7 +22,7 @@ export default function(container) {
     let nodeInfoView = new NodeInfoView("#node-info-view");
     let subView = new SubView("#sub-view");
     let strucInfoView = new StrucInfoView("#struc-info-view");
-
+    treeGraphView.render(1);
     let header = new HeaderView("#header", dataset_name => {
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
             mainData => {
