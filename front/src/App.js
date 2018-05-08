@@ -29,8 +29,7 @@ export default function(container) {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
                         .then(sub_graph => {
-                            log(sub_graph);
-                            subView.render(sub_graph);
+                            subView.render(sub_graph,ID);
                         });
                 });
                 Loader.json("graph-struc/" + dataset_name + "/subInfo").then(

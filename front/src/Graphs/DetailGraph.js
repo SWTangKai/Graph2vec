@@ -18,7 +18,6 @@ class DetailGraph {
         let height = this.height;
 
         document.querySelector(domName).innerHTML = "";
-
         let nodes = data.nodes;
         let links = data.links;
 
@@ -28,8 +27,8 @@ class DetailGraph {
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 2));
 
-        simulation.nodes(data.nodes).on("tick", ticked);
-        simulation.force("link").links(data.links);
+        simulation.nodes(nodes).on("tick", ticked);
+        simulation.force("link").links(links);
 
         let svg = d3
             .select(domName)
@@ -39,13 +38,13 @@ class DetailGraph {
 
         let link = svg
             .selectAll("line")
-            .data(data.links)
+            .data(links)
             .enter()
             .append("line");
 
         let node = svg
             .selectAll(".node")
-            .data(data.nodes)
+            .data(nodes)
             .enter()
             .append("g")
             .attr("class", "node");
@@ -54,6 +53,7 @@ class DetailGraph {
         node
             .append("circle")
             .attr("r", d => {
+                log(d);
                 return d.id === ID ? 9 : 5;
             })
             .style("fill", d => {
