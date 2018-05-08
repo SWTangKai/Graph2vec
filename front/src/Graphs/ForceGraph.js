@@ -56,7 +56,8 @@ class ForceGraph {
             .enter()
             .append("g")
             .attr("class", "node")
-            .attr("group_id", d => d['group_id']);
+            .attr("group_id", d => d['group_id'])
+            .attr("id", d => "_" + d['group_id']);
 
         // .on("mouseover", mouseOverFunction)
         // .on("mouseout", mouseOutFunction)
@@ -86,7 +87,10 @@ class ForceGraph {
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
 
-            node.attr("transform", d => `translate(${d.x},${d.y})`);
+            node.attr("transform", d => `translate(${d.x},${d.y})`)
+            node.attr("transx", d => d.x);
+            node.attr("transy", d => d.y);
+
         }
 
 

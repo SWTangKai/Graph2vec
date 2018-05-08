@@ -9,10 +9,10 @@ class SubView {
         this.dom = document.querySelector(domName);
     }
 
-    render(data) {
+    render(data,ID) {
         this.dom.innerHTML = "Sub Graph";
-        let detailCircleGraph = new DetailGraph(this.domName);
-        detailCircleGraph.render(data, -1);
+        let detailCircleGraph = new DetailCircleGraph(this.domName);
+        detailCircleGraph.render(data, ID);
     }
 }
 

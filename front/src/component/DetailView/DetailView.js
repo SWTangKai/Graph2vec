@@ -20,7 +20,6 @@ export default class {
 
     reset_dom(name) {
         let item_num = $(name + " .owl-item").length;
-        log(item_num);
         for (let i = 0; i < item_num; i++) {
             $(".owl-carousel")
                 .data("owl-carousel")
