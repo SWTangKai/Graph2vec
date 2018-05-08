@@ -1,5 +1,8 @@
 /*jslint es6 */
-import { ColorManage } from "Utils/utils";
+import {
+    ColorManage
+} from "Utils/utils";
+import ForceHighlight from "./ForceHighlight";
 /**
  *
  *
@@ -17,7 +20,7 @@ class ForceGraph {
         let domName = this.domName;
         let width = this.width;
         let height = this.height;
-        
+
 
         document.querySelector(domName).innerHTML = "";
 
@@ -67,16 +70,14 @@ class ForceGraph {
             })
             .call(
                 d3
-                    .drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended)
+                .drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended)
             );
 
-        self.linkedByIndex = {};
-        links.forEach(d => {
-            self.linkedByIndex[`${d.source.index},${d.target.index}`] = true;
-        });
+
+
 
         function ticked() {
             link
@@ -88,44 +89,6 @@ class ForceGraph {
             node.attr("transform", d => `translate(${d.x},${d.y})`);
         }
 
-        function fade(opacity){
-            return d => {
-            const circle = d3.select(this);
-            node
-                .transition(500)
-                .style("opacity", o => {
-                    const isConnectedValue = isConnected(o, d);
-                    if (!isConnectedValue) {
-                        return opacity;
-                    }
-                })
-            link
-                .transition(500)
-                .style("stroke-opacity", o => {
-                    let v = o.source.index === d.index || o.target.index === d.index ? 1 : opacity;
-                    return v;
-                })
-                .transition(500);
-
-            circle.transition(500).attr("r", () => 1.4 * nodeRadius(d));}
-        }
-
-
-        function isConnected(a, b) {
-            return (
-                isConnectedAsTarget(a, b) ||
-                isConnectedAsSource(a, b) ||
-                a.index === b.index
-            );
-        }
-
-        function isConnectedAsSource(a, b) {
-            return self.linkedByIndex[`${a.index},${b.index}`];
-        }
-
-        function isConnectedAsTarget(a, b) {
-            return self.linkedByIndex[`${b.index},${a.index}`];
-        }
 
 
         function nodeRadius(d) {
@@ -149,6 +112,8 @@ class ForceGraph {
             // d.fx = null;
             // d.fy = null;
         }
+
+        return new ForceHighlight(node, link, links);
     }
 }
 export default ForceGraph;
