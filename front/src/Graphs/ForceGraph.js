@@ -18,9 +18,6 @@ class ForceGraph {
         let width = this.width;
         let height = this.height;
         
-        data.nodes.forEach(function(d){
-            d['id'] = d['group_id']
-        })
 
         document.querySelector(domName).innerHTML = "";
 
@@ -31,12 +28,12 @@ class ForceGraph {
 
         let simulation = d3
             .forceSimulation()
-            .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody())
+            .force("link", d3.forceLink().id(d => d.group_id))
+            .force("charge", d3.forceManyBody().strength([-50]))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         simulation.nodes(nodes).on("tick", ticked);
-        simulation.force("link").links(links).id(d => d.group_id);
+        simulation.force("link").links(links).distance([10]).id(d => d.group_id);
 
         let svg = d3
             .select(domName)
@@ -95,57 +92,28 @@ class ForceGraph {
 
         }
 
-        function mouseOverFunction(d) {
+        function fade(opacity){
+            return d => {
             const circle = d3.select(this);
-            const second = {};
             node
                 .transition(500)
                 .style("opacity", o => {
                     const isConnectedValue = isConnected(o, d);
-                    if (isConnectedValue) {
-                        second[o.index] = true;
-                        return 1.0;
+                    if (!isConnectedValue) {
+                        return opacity;
                     }
-                    return 0.2;
                 })
-                .style("fill", o => {
-                    let fillColor;
-                    if (
-                        isConnectedAsTarget(o, d) &&
-                        isConnectedAsSource(o, d)
-                    ) {
-                        fillColor = "green";
-                    } else if (isConnectedAsSource(o, d)) {
-                        fillColor = "red";
-                    } else if (isConnectedAsTarget(o, d)) {
-                        fillColor = "blue";
-                    } else if (isEqual(o, d)) {
-                        fillColor = "hotpink";
-                    } else {
-                        fillColor = "#000";
-                    }
-                    return fillColor;
-                });
             link
                 .transition(500)
                 .style("stroke-opacity", o => {
-                    let v = o.source === d || o.target === d ? 1 : 0.2;
+                    let v = o.source.index === d.index || o.target.index === d.index ? 1 : opacity;
                     return v;
                 })
                 .transition(500);
 
-            circle.transition(500).attr("r", () => 1.4 * nodeRadius(d));
+            circle.transition(500).attr("r", () => 1.4 * nodeRadius(d));}
         }
 
-        function mouseOutFunction() {
-            const circle = d3.select(this);
-
-            node.transition(500);
-
-            link.transition(500);
-
-            circle.transition(500).attr("r", nodeRadius);
-        }
 
         function isConnected(a, b) {
             return (
@@ -163,9 +131,6 @@ class ForceGraph {
             return self.linkedByIndex[`${b.index},${a.index}`];
         }
 
-        function isEqual(a, b) {
-            return a.index === b.index;
-        }
 
         function nodeRadius(d) {
             return Math.pow(40.0 * (4 + 1), 1 / 3);

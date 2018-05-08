@@ -30,6 +30,7 @@ export default class {
                 results.map(subData => {
                     // TODO: render dynamic
                     me.createOneCard(subData);
+                    log(subData);
                 });
             }
         );

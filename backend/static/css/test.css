@@ -71,3 +71,40 @@ ul {
 #sidebar ul li {
     display: inline-block;
 }
+
+
+
+.node circle {
+    fill: #DDD;
+    stroke: #777;
+    stroke-width: 2px;
+}
+
+.node text {
+    font-family: sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.link {
+    stroke: #88A;
+    stroke-width: 4px;
+}
+
+text {
+    font: 18px sans-serif;
+    pointer-events: none;
+}
+
+#end-arrow {
+    fill: #88A;
+}
+
+.x {
+    float: left;
+    height: 50px;
+    width:  50px;
+    border: #777 solid;
+}
