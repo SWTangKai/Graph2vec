@@ -6,104 +6,68 @@ import { ColorManage, log } from "Utils/utils";
  * @class DetailCircleGraph
  */
 
- class DetailCircleGraph{
-    constructor(domName){
+class DetailCircleGraph {
+    constructor(domName) {
         this.domName = domName;
         this.width = document.querySelector(domName).clientWidth;
         this.height = document.querySelector(domName).clientHeight;
     }
-    
-    render(data, ID){
-        
-        let domName = this.domName;
-        let width = this.width;
-        let height = this.height;
-        
-        let secondfloor = {}
-        let firstfloor = {}
-        let linkdata = {'links':[],"nodes":[]}
-        let nodedict = {}
-        let sourcenode = []
 
-        data.nodes.forEach(function(d){
-            if(!nodedict[d.id])
-                nodedict[d.id] = d.c
-        })
-        //arc first floor data
-        data.links.forEach(function(d){
-            let source = d.source,
-                target = d.target,
-                c = nodedict[target];
-            if(firstfloor[c]){
-                firstfloor[c]['value']++
-            }else{
-                firstfloor[c] = {}
-                firstfloor[c]['value'] = 1
-            }
-            if(sourcenode.indexOf(source) == -1){
-                sourcenode.push(source)
-                linkdata.nodes.push({"c":nodedict[d.source],"id":d.source})
-            }
-        })
-        
-        for(let head in firstfloor){
-            let value = firstfloor[head]['value']
-            firstfloor[head] = []
-            firstfloor[head].push({'id':head, 'value':value, 'c':head})
+    render(data, ID) {
+
+        let domName = this.domName,
+            width = this.width,
+            height = this.height;
+
+
+        let linkdata = {
+            'links': [{ 'source': '1', 'target': '37' }],
+            'nodes': [{ 'c': '0', 'id': '1', 'ind': '1' },
+            { 'c': '0', 'id': '37', 'ind': '37' }
+            ]
         }
-        //arc second floor data
-        data.links.forEach(function(d){
-            let source = d.source,
-                target = d.target,
-                c = nodedict[target];
-            if(secondfloor[c]){
-                secondfloor[c].push({'id':target, 'value':1, 'c':c})
-            }else{
-                secondfloor[c] = []
-                secondfloor[c].push({'id':target, 'value':1, 'c':c})
+
+        let nodedata = {
+            '1': {
+                'id': '1', 'children': [{
+                    "c": '0', "id": '0', 'children': [{ 'id': '37', 'value': 4, 'c': 0 }, { 'id': '22', 'value': 1, 'c': 0 }]
+                }, {
+                    "c": '0', "id": '1', 'children': [{ 'id': '9', 'value': 1, 'c': 1 }, { 'id': '10', 'value': 1, 'c': 1 }]
+                }]
+            }, '37': {
+                'id': '1', 'children': [{
+                    "c": '0', "id": '0', 'children': [{ 'id': '37', 'value': 4, 'c': 0 }, { 'id': '22', 'value': 1, 'c': 0 }]
+                }, {
+                    "c": '0', "id": '1', 'children': [{ 'id': '9', 'value': 1, 'c': 1 }, { 'id': '10', 'value': 1, 'c': 1 }]
+                }]
             }
-        })
-        
-        data.links.forEach(function(d){
-            if(sourcenode.indexOf(d.source) != -1 && sourcenode.indexOf(d.target) != -1){
-                linkdata.links.push(d)
-            }
-        })
-        
-        log("data:",data)
-        log("linkdata:",linkdata)
-        log("firstfloor:",firstfloor)
-        log("secondfloor:",secondfloor)
-        log('this is linkdata',linkdata)
+        }
+
+        let color = new ColorManage();
+        let radius = 15;
         let nodes = linkdata.nodes;
         let links = linkdata.links;
 
         let simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody())
+            .force("charge", d3.forceManyBody().strength([-50]))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         simulation.nodes(nodes).on("tick", ticked);
-        simulation.force("link").links(links);
-
-        let inarc = d3.arc()
-            .innerRadius(20)
-            .outerRadius(10)
-
-        let outarc = d3.arc()
-            .innerRadius(30)
-            .outerRadius(20)
+        simulation.force("link").links(links).distance([100]);
 
         let pie = d3.pie()
-            .value(function(d) {return d.value; })
+            .value(function (d) { return d.value; })
             .sort(null);
 
         let svg = d3
             .select(domName)
             .append("svg")
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", height)
+            .append('g')
+            //.call(zoom);
 
         let link = svg
             .selectAll("line")
@@ -118,12 +82,11 @@ import { ColorManage, log } from "Utils/utils";
             .append("g")
             .attr("class", "node");
 
-        let color = new ColorManage();
 
         node
             .append("circle")
             .attr('id', d => {
-                return  d.id
+                return d.id
             })
             .attr("r", d => {
                 return d.id === ID ? 9 : 5;
@@ -131,38 +94,40 @@ import { ColorManage, log } from "Utils/utils";
             .style("fill", d => {
                 return color.Get(d.c);
             });
-            
-        //append inner arc
-        let innerArc = node.selectAll(".arc")
-            .data(function(d){
-                let meta = pie(firstfloor[d.c])
-                return meta
-            })
-            .enter().append("g")
-            .attr("class", "arc");
 
-            innerArc.append("path")
-            .attr("d", inarc)
-            .attr("fill", d => {
-                return color.Get(d.c)
-            });
+        let partition = d3.partition()
+            .size([2 * Math.PI, radius]);
+
+        let arc = d3.arc()
+            .startAngle(function (d) { return d.x0 })
+            .endAngle(function (d) { return d.x1 })
+            .innerRadius(function (d) { return d.y0 })
+            .outerRadius(function (d) { return d.y1 });
+
+        let Arc = node.selectAll(".Arc")
+            .data(function (d) {
+                let id = d.ind;
+                let nodeData = nodedata[id]
+                let root = d3.hierarchy(nodeData)
+                    .sum(function (d) { return d.value })
+                partition(root);
+                return root.descendants()
+            })
+            .enter().append('path')
+            .attr("display", function (d) { return d.depth ? null : "none"; })
+            .attr("d", arc)
+            .style('stroke', '#fff')
+            .style("fill", function (d) {log(d); return color.Get((d.children ? d : d.parent).data.id); })
         
-        let outerArc = innerArc.selectAll('.ddd')
-            .data(function(d){
-                let meta = pie(secondfloor[d.data.c])
-                return meta
-            })
-            .enter().append("g")
-            .attr("class", "arc");
+        let zoom_handler = d3.zoom()
+            .scaleExtent([1, 10])
+            .on("zoom", zoom_actions);
 
-            outerArc.append('path')
-                .attr('d', outarc)
-                .attr("fill", d => {
-                    return color.Get(d.c)
-                });
+        function zoom_actions(){
+            svg.transition().duration(200).attr("transform", d3.event.transform)
+        }
 
-
-
+        zoom_handler(svg);
 
         function ticked() {
             link
@@ -173,6 +138,6 @@ import { ColorManage, log } from "Utils/utils";
             node.attr("transform", d => `translate(${d.x},${d.y})`)
         }
     }
- }
+}
 
- export default DetailCircleGraph;
+export default DetailCircleGraph;
