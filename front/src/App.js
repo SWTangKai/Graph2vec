@@ -26,13 +26,15 @@ export default function (container) {
     let header = new HeaderView("#header", dataset_name => {
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
             mainData => {
-                mainGraphView.render(mainData);
+                let forceHilight = mainGraphView.render(mainData);
                 detailView.render(dataset_name);
+                window.fore = forceHilight;
+                d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2));
                 mainGraphView.bindEvent("#main-graph .node", "click", d => {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
                         .then(sub_graph => {
-                            subView.render(sub_graph,ID);
+                            subView.render(sub_graph, ID);
                         });
                 });
             }

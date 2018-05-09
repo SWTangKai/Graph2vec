@@ -29,6 +29,10 @@ class Card {
         //detailGraph.render(data, this.ID);
         let ssankey = new Ssankey(this.graphID);
         ssankey.render(data, this.ID);
+        d3.select(this.infoID).data([{
+            index: data.id
+        }]).enter();
+        // console.log(this);
     }
 
     createEle(type, className, id) {

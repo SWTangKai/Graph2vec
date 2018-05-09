@@ -1,9 +1,14 @@
-import { Loader, log } from "Utils/utils";
+import {
+    Loader,
+    log
+} from "Utils/utils";
 
 import Card from "./Card/Card";
 
 import "./DetailView.css";
-import { ColorManage } from "Utils/utils";
+import {
+    ColorManage
+} from "Utils/utils";
 
 export default class {
     constructor(domName) {
@@ -30,6 +35,11 @@ export default class {
                 results.map(subData => {
                     // TODO: render dynamic
                     me.createOneCard(subData);
+<<<<<<< HEAD
+=======
+                    log(subData);
+
+>>>>>>> d1a083d921fbcc928dc87c2e719d1f415cb06af3
                 });
             }
         );
@@ -54,9 +64,9 @@ export default class {
         let card = new Card("" + data["id"]);
         let content = card.dom().outerHTML;
         this.owl.data("owl-carousel").addItem(content);
-        let nodec = ''
-        data.nodes.forEach(function(d){
-            if(d['id'] == data['id'])
+        let nodec = '';
+        data.nodes.forEach(function (d) {
+            if (d['id'] == data['id'])
                 nodec = d['c']
         })
         let color = new ColorManage();

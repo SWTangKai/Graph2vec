@@ -1,4 +1,7 @@
-import { log, Loader } from "../../utils/utils";
+import {
+    log,
+    Loader
+} from "../../utils/utils";
 import ForceDirect from "Graphs/ForceGraph";
 
 import "./main_graph.css";
@@ -11,7 +14,7 @@ export default class {
     }
 
     render(data) {
-        this.graph.render(data);
+        return this.graph.render(data);
     }
 
     bindEvent(domName, type, callback) {
