@@ -1,6 +1,5 @@
 import echarts from "echarts";
-import DetailGraph from "Graphs/DetailGraph";
-import DetailCircleGraph from "Graphs/DetailCircleGraph";
+import SubCard from "./SubCard/SubCard";
 import "./SubView.css";
 
 class SubView {
@@ -10,9 +9,9 @@ class SubView {
     }
 
     render(data,ID) {
-        this.dom.innerHTML = "Sub Graph";
-        let detailCircleGraph = new DetailCircleGraph(this.domName);
-        detailCircleGraph.render(data, ID);
+        d3.select(this.domName).append('div').attr('id',"Sub-card-"+ID).attr('class','xxx')
+        let subcard = new SubCard("#Sub-card-"+ID);
+        subcard.render(data, ID);
     }
 }
 

@@ -21,7 +21,7 @@ export default function (container) {
     let treeGraphView = new TreeGraphView("#tree-graph");
     let nodeInfoView = new NodeInfoView("#node-info-view");
     let subView = new SubView("#sub-view");
-    let strucInfoView = new StrucInfoView("#struc-info-view");
+    //let strucInfoView = new StrucInfoView("#struc-info-view");
     // treeGraphView.render(1);
     let header = new HeaderView("#header", dataset_name => {
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
@@ -34,7 +34,19 @@ export default function (container) {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
                         .then(sub_graph => {
-                            subView.render(sub_graph, ID);
+                            let divlength = $('#sub-view').children().length
+                            if(divlength >= 2){
+                                document.getElementById('sub-view').removeChild(document.getElementById('sub-view').getElementsByTagName("div")[0])
+                                let resubview = new SubView("#sub-view")
+                                let ID = parseInt(Math.random() * 100)
+                                resubview.render(sub_graph, ID)
+                            }else if(divlength == 1){
+                                let resubview = new SubView("#sub-view")
+                                let ID = parseInt(Math.random() * 100)
+                                resubview.render(sub_graph, ID)
+                            }else if(divlength == 0){
+                                subView.render(sub_graph, ID);
+                            }
                         });
                 });
             }
