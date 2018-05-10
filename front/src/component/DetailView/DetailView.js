@@ -35,11 +35,6 @@ export default class {
                 results.map(subData => {
                     // TODO: render dynamic
                     me.createOneCard(subData);
-<<<<<<< HEAD
-=======
-                    log(subData);
-
->>>>>>> d1a083d921fbcc928dc87c2e719d1f415cb06af3
                 });
             }
         );
