@@ -53,7 +53,6 @@ class DetailGraph {
         node
             .append("circle")
             .attr("r", d => {
-                log(d);
                 return d.id === ID ? 9 : 5;
             })
             .style("fill", d => {
