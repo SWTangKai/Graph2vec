@@ -1,5 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource
+from utils.Transformer import TrasferGraphToSumbersform
 
 
 class GraphV2List(Resource):
@@ -52,3 +53,21 @@ class SubGraph(Resource):
             query = col.find_one(
                 {'type': 'sub_groups_edge', "group_id": ID})
             return jsonify({"nodes": query['nodes'], "links": query['edges']})
+
+
+class SubGraphDis(Resource):
+    def __init__(self, mongo):
+        self.mongo = mongo
+        self.collection_names = mongo.db.collection_names()
+
+    def get(self, filename, ID):
+        if filename in self.collection_names:
+            col = self.mongo.db[filename]
+            group_list = col.find_one({'type': 'group_id'})
+            node_id_mapper = {}
+            for group in group_list['data']:
+                for n in group['members']:
+                    node_id_mapper[n] = group['group_id']
+            query = col.find_one(
+                {'type': 'sub_groups_edge', "group_id": ID})
+            return jsonify(TrasferGraphToSumbersform(query, node_id_mapper))

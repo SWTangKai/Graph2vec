@@ -1,5 +1,8 @@
 /*jslint es6 */
-import { ColorManage, log } from "Utils/utils";
+import {
+    ColorManage,
+    log
+} from "Utils/utils";
 /**
  *
  *
@@ -21,24 +24,78 @@ class DetailCircleGraph {
 
 
         let linkdata = {
-            'links': [{ 'source': '1', 'target': '37' }],
-            'nodes': [{ 'c': '0', 'id': '1', 'ind': '1' },
-            { 'c': '0', 'id': '37', 'ind': '37' }
+            'links': [{
+                'source': '1',
+                'target': '37'
+            }],
+            'nodes': [{
+                    'c': '0',
+                    'id': '1',
+                    'ind': '1'
+                },
+                {
+                    'c': '0',
+                    'id': '37',
+                    'ind': '37'
+                }
             ]
         }
 
         let nodedata = {
             '1': {
-                'id': '1', 'children': [{
-                    "c": '0', "id": '0', 'children': [{ 'id': '37', 'value': 4, 'c': 0 }, { 'id': '22', 'value': 1, 'c': 0 }]
+                'id': '1',
+                'children': [{
+                    "c": '0',
+                    "id": '0',
+                    'children': [{
+                        'id': '37',
+                        'value': 4,
+                        'c': 0
+                    }, {
+                        'id': '22',
+                        'value': 1,
+                        'c': 0
+                    }]
                 }, {
-                    "c": '0', "id": '1', 'children': [{ 'id': '9', 'value': 1, 'c': 1 }, { 'id': '10', 'value': 1, 'c': 1 }]
+                    "c": '0',
+                    "id": '1',
+                    'children': [{
+                        'id': '9',
+                        'value': 1,
+                        'c': 1
+                    }, {
+                        'id': '10',
+                        'value': 1,
+                        'c': 1
+                    }]
                 }]
-            }, '37': {
-                'id': '1', 'children': [{
-                    "c": '0', "id": '0', 'children': [{ 'id': '37', 'value': 4, 'c': 0 }, { 'id': '22', 'value': 1, 'c': 0 }]
+            },
+            '37': {
+                'id': '1',
+                'children': [{
+                    "c": '0',
+                    "id": '0',
+                    'children': [{
+                        'id': '37',
+                        'value': 4,
+                        'c': 0
+                    }, {
+                        'id': '22',
+                        'value': 1,
+                        'c': 0
+                    }]
                 }, {
-                    "c": '0', "id": '1', 'children': [{ 'id': '9', 'value': 1, 'c': 1 }, { 'id': '10', 'value': 1, 'c': 1 }]
+                    "c": '0',
+                    "id": '1',
+                    'children': [{
+                        'id': '9',
+                        'value': 1,
+                        'c': 1
+                    }, {
+                        'id': '10',
+                        'value': 1,
+                        'c': 1
+                    }]
                 }]
             }
         }
@@ -58,7 +115,9 @@ class DetailCircleGraph {
         simulation.force("link").links(links).distance([100]);
 
         let pie = d3.pie()
-            .value(function (d) { return d.value; })
+            .value(function (d) {
+                return d.value;
+            })
             .sort(null);
 
         let svg = d3
@@ -67,7 +126,7 @@ class DetailCircleGraph {
             .attr("width", width)
             .attr("height", height)
             .append('g')
-            //.call(zoom);
+        //.call(zoom);
 
         let link = svg
             .selectAll("line")
@@ -99,32 +158,47 @@ class DetailCircleGraph {
             .size([2 * Math.PI, radius]);
 
         let arc = d3.arc()
-            .startAngle(function (d) { return d.x0 })
-            .endAngle(function (d) { return d.x1 })
-            .innerRadius(function (d) { return d.y0 })
-            .outerRadius(function (d) { return d.y1 });
+            .startAngle(function (d) {
+                return d.x0
+            })
+            .endAngle(function (d) {
+                return d.x1
+            })
+            .innerRadius(function (d) {
+                return d.y0
+            })
+            .outerRadius(function (d) {
+                return d.y1
+            });
 
         let Arc = node.selectAll(".Arc")
             .data(function (d) {
                 let id = d.ind;
                 let nodeData = nodedata[id]
                 let root = d3.hierarchy(nodeData)
-                    .sum(function (d) { return d.value })
+                    .sum(function (d) {
+                        return d.value
+                    })
                 partition(root);
                 return root.descendants()
             })
             .enter().append('path')
-            .attr("display", function (d) { return d.depth ? null : "none"; })
+            .attr("display", function (d) {
+                return d.depth ? null : "none";
+            })
             .attr("d", arc)
             .style('stroke', '#fff')
-            .style("fill", function (d) {log(d); return color.Get((d.children ? d : d.parent).data.id); })
-        
+            .style("fill", function (d) {
+                log(d);
+                return color.Get((d.children ? d : d.parent).data.id);
+            })
+
         let zoom_handler = d3.zoom()
             .scaleExtent([1, 10])
             .on("zoom", zoom_actions);
 
-        function zoom_actions(){
-            svg.transition().duration(200).attr("transform", d3.event.transform)
+        function zoom_actions() {
+            svg.attr("transform", d3.event.transform)
         }
 
         zoom_handler(svg);

@@ -22,14 +22,14 @@ export default function (container) {
     let nodeInfoView = new NodeInfoView("#node-info-view");
     let subView = new SubView("#sub-view");
     let strucInfoView = new StrucInfoView("#struc-info-view");
-    // treeGraphView.render(1);
+    treeGraphView.render(1);
     let header = new HeaderView("#header", dataset_name => {
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
             mainData => {
                 let forceHilight = mainGraphView.render(mainData);
                 detailView.render(dataset_name);
                 window.fore = forceHilight;
-                d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2));
+                d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
                 mainGraphView.bindEvent("#main-graph .node", "click", d => {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
