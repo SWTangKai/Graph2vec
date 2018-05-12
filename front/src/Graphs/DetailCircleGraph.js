@@ -126,16 +126,15 @@ class DetailCircleGraph {
             .attr("width", width)
             .attr("height", height)
             .append('g')
-        //.call(zoom);
 
         let link = svg
-            .selectAll("line")
+            .selectAll(".xline")
             .data(links)
             .enter()
             .append("line");
 
         let node = svg
-            .selectAll(".node")
+            .selectAll(".xnode")
             .data(nodes)
             .enter()
             .append("g")
@@ -187,15 +186,23 @@ class DetailCircleGraph {
                 return d.depth ? null : "none";
             })
             .attr("d", arc)
+            .on("mouseover", function (d) {
+                d3.select(this).transition().attr("transform", "scale(1.5)")
+            })
+            .on('mouseout', function (d) {
+                d3.select(this).transition().attr("transform", "scale(1)")
+            })
+            .transition()
             .style('stroke', '#fff')
             .style("fill", function (d) {
-                log(d);
                 return color.Get((d.children ? d : d.parent).data.id);
             })
+            .attr('class', 'path')
 
         let zoom_handler = d3.zoom()
             .scaleExtent([1, 10])
             .on("zoom", zoom_actions);
+
 
         function zoom_actions() {
             svg.attr("transform", d3.event.transform)
@@ -211,6 +218,10 @@ class DetailCircleGraph {
                 .attr("y2", d => d.target.y);
             node.attr("transform", d => `translate(${d.x},${d.y})`)
         }
+    }
+
+    bindEvent(domName, type, callback) {
+        d3.selectAll(domName).on(type, callback);
     }
 }
 

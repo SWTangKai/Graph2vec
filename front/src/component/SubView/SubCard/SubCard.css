@@ -1,11 +1,5 @@
-#sub-view {
+.Sub-card {
     /* border: brown solid; */
-    height: 50%;
-    width: 85%;
-    float: left;
-}
-
-.xxx {
     height: 100%;
     width: 50%;
     float: left;
