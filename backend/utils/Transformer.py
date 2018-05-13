@@ -53,21 +53,21 @@ def TrasferGraphToSumbersform(sub_graph, node_id_mapper):
     #     'id': k_id,
     #     'children': dict((k, dict(v)) for k, v in node_info[k_id].items())
     # } for k_id in node_info]
-
+    print(node_info)
     node_info = [{
         'c': group_c,
         'id': k_id,
         'children': [{
-            'c': node_info[k_id]['entry_c'][e],
-            'children':[
+            'c': e,
+            'children': [
                 {
                     'id': i[0],
-                    'value': node_info[k_id]['entry_couter'][e],
+                    'value': node_info[k_id]['entry_couter'][i[0]],
                     'c': i[1]
                 }
-                for i in filter(lambda s:s[1] == node_info[k_id]['entry_c'][e], node_info[k_id]['entry_c'].items())
+                for i in filter(lambda s:s[1] == e, node_info[k_id]['entry_c'].items())
             ]
-        } for e in node_info[k_id]['entry_couter']]
+        } for e in node_info[k_id]['color_couter']]
     } for k_id in node_info]
 
     # {

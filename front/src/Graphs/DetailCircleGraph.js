@@ -1,8 +1,10 @@
 /*jslint es6 */
 import {
     ColorManage,
-    log
+    log,
+    Loader
 } from "Utils/utils";
+
 /**
  *
  *
@@ -16,94 +18,21 @@ class DetailCircleGraph {
         this.height = document.querySelector(domName).clientHeight;
     }
 
-    render(data, ID) {
+    // render(data, ID) {
 
+    //     this.testRender(d);
+
+    // }
+
+    render(linkdata) {
         let domName = this.domName,
             width = this.width,
             height = this.height;
 
-
-        let linkdata = {
-            'links': [{
-                'source': '1',
-                'target': '37'
-            }],
-            'nodes': [{
-                    'c': '0',
-                    'id': '1',
-                    'ind': '1'
-                },
-                {
-                    'c': '0',
-                    'id': '37',
-                    'ind': '37'
-                }
-            ]
-        }
-
-        let nodedata = {
-            '1': {
-                'id': '1',
-                'children': [{
-                    "c": '0',
-                    "id": '0',
-                    'children': [{
-                        'id': '37',
-                        'value': 4,
-                        'c': 0
-                    }, {
-                        'id': '22',
-                        'value': 1,
-                        'c': 0
-                    }]
-                }, {
-                    "c": '0',
-                    "id": '1',
-                    'children': [{
-                        'id': '9',
-                        'value': 1,
-                        'c': 1
-                    }, {
-                        'id': '10',
-                        'value': 1,
-                        'c': 1
-                    }]
-                }]
-            },
-            '37': {
-                'id': '1',
-                'children': [{
-                    "c": '0',
-                    "id": '0',
-                    'children': [{
-                        'id': '37',
-                        'value': 4,
-                        'c': 0
-                    }, {
-                        'id': '22',
-                        'value': 1,
-                        'c': 0
-                    }]
-                }, {
-                    "c": '0',
-                    "id": '1',
-                    'children': [{
-                        'id': '9',
-                        'value': 1,
-                        'c': 1
-                    }, {
-                        'id': '10',
-                        'value': 1,
-                        'c': 1
-                    }]
-                }]
-            }
-        }
-
         let color = new ColorManage();
         let radius = 15;
         let nodes = linkdata.nodes;
-        let links = linkdata.links;
+        let links = linkdata.edges;
 
         let simulation = d3
             .forceSimulation()
@@ -147,7 +76,7 @@ class DetailCircleGraph {
                 return d.id
             })
             .attr("r", d => {
-                return d.id === ID ? 9 : 5;
+                return 5;
             })
             .style("fill", d => {
                 return color.Get(d.c);
@@ -172,11 +101,12 @@ class DetailCircleGraph {
 
         let Arc = node.selectAll(".Arc")
             .data(function (d) {
-                let id = d.ind;
-                let nodeData = nodedata[id]
+                // log(d);
+                // let id = d.ind;
+                let nodeData = d
                 let root = d3.hierarchy(nodeData)
                     .sum(function (d) {
-                        return d.value
+                        return d.value ? d.value : 0;
                     })
                 partition(root);
                 return root.descendants()
@@ -192,12 +122,11 @@ class DetailCircleGraph {
             .on('mouseout', function (d) {
                 d3.select(this).transition().attr("transform", "scale(1)")
             })
-            .transition()
             .style('stroke', '#fff')
             .style("fill", function (d) {
-                return color.Get((d.children ? d : d.parent).data.id);
+                return color.Get((d.children ? d : d.parent).data.c);
             })
-            .attr('class', 'path')
+            .attr('class', 'entry')
 
         let zoom_handler = d3.zoom()
             .scaleExtent([1, 10])

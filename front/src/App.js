@@ -32,21 +32,10 @@ export default function (container) {
                 d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
                 mainGraphView.bindEvent("#main-graph .node", "click", d => {
                     let ID = d.group_id;
-                    Loader.json("graph-struc/" + dataset_name + "/sub/" + ID)
+                    Loader.json("graph-struc/" + dataset_name + "/subDis/" + ID)
                         .then(sub_graph => {
-                            let divlength = $('#sub-view').children().length
-                            if (divlength >= 2) {
-                                document.getElementById('sub-view').removeChild(document.getElementById('sub-view').getElementsByTagName("div")[0])
-                                let resubview = new SubView("#sub-view")
-                                let ID = parseInt(Math.random() * 100)
-                                resubview.render(sub_graph, ID)
-                            } else if (divlength == 1) {
-                                let resubview = new SubView("#sub-view")
-                                let ID = parseInt(Math.random() * 100)
-                                resubview.render(sub_graph, ID)
-                            } else if (divlength == 0) {
-                                subView.render(sub_graph, ID);
-                            }
+                            subView.clean();
+                            subView.render(sub_graph, dataset_name);
                         });
                 });
             }

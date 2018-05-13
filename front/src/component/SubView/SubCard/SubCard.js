@@ -8,19 +8,22 @@ class SubCard {
     constructor(domName) {
         this.domName = domName;
         this.dom = document.querySelector(domName);
+        this.detailCircleGraph = new DetailCircleGraph(this.domName);
     }
 
-    render(data,ID) {
-        let detailCircleGraph = new DetailCircleGraph(this.domName);
-        detailCircleGraph.render(data, ID);
-        detailCircleGraph.bindEvent(this.domName, "click", d => {
-            let divlength = $('#sub-view').children().length
-            if(divlength >= 2)
-                document.getElementById('sub-view').removeChild(document.getElementById('sub-view').getElementsByTagName("div")[0])
-            let subview = new SubView("#sub-view")
-            let ID = parseInt(Math.random() * 100)
-            subview.render(data, ID)
-        })
+    clean() {
+        this.dom.innerHTML = "";
+    }
+    render(data) {
+        this.detailCircleGraph.render(data);
+        // detailCircleGraph.bindEvent(this.domName, "click", d => {
+        //     let divlength = $('#sub-view').children().length
+        //     if (divlength >= 2)
+        //         document.getElementById('sub-view').removeChild(document.getElementById('sub-view').getElementsByTagName("div")[0])
+        //     let subview = new SubView("#sub-view")
+        //     let ID = parseInt(Math.random() * 100)
+        //     subview.render(data, ID)
+        // })
     }
 }
 
