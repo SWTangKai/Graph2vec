@@ -24,6 +24,7 @@ export default function (container) {
     let strucInfoView = new StrucInfoView("#struc-info-view");
     treeGraphView.render(1);
     let header = new HeaderView("#header", dataset_name => {
+        $('#selecteddataset').html(dataset_name)
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
             mainData => {
                 let forceHilight = mainGraphView.render(mainData);

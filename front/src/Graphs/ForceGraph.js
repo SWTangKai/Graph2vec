@@ -63,13 +63,29 @@ class ForceGraph {
         // .on("mouseout", mouseOutFunction)
 
         let color = new ColorManage();
+        let num = 0;
         node
             .append("circle")
             .attr("r", nodeRadius)
             .style("fill", d => {
-                return color.Get(d.c);
+                let ncolor = color.Get(d.c)
+                num = num + 1;
+                let radialGradient = svg.append("defs")
+                    .append("radialGradient")
+                    .attr("id", "radial-gradient-" + num);
+                
+                radialGradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", ncolor);
+                
+                radialGradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", "#fff");
+                
+                return "url(#radial-gradient-"+ num + ")"
             })
             .call(
+                
                 d3
                 .drag()
                 .on("start", dragstarted)

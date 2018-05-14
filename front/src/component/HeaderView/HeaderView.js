@@ -8,6 +8,7 @@ export default function(headerDom, changeCallBack) {
     Loader.json("graph/").then(graphNameList => {
         graphNameList.forEach(e => {
             dataset_dropdown_menu.append("<li><a href='#' id='" + e +"' value = '" + e + "'>" + e + "</a><li>");
+            log('first',e)
             $("#" + e).click(function(){
                 changeCallBack($(this).attr("value"))
             })
@@ -19,6 +20,7 @@ export default function(headerDom, changeCallBack) {
 
     select_group.forEach(e => {
         select_dropdown_menu.append("<li><a href='#' id='" + e +"' value = '" + e + "'>" + e + "</a><li>");
+        log('second',e)
         $("#" + e).click(function(){
             changeCallBack($(this).attr("value"))
         })
