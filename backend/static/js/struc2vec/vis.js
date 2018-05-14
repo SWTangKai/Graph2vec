@@ -7,7 +7,9 @@ function isLinked(c, n) {
 function RoundOfNode(center, nodes, wise = 2) {
     let nodeQ = [center];
     let record = [];
-    let acc = { center: true };
+    let acc = {
+        center: true
+    };
     while (wise--) {
         for (let i = 0; i < nodeQ.length; i++) {
             const element = nodeQ[i];
@@ -16,7 +18,10 @@ function RoundOfNode(center, nodes, wise = 2) {
                 if (!acc[ID] && isLinked(element, ID)) {
                     acc[ID] = true;
                     nodeQ.push(ID);
-                    record.push({ source: element, target: ID });
+                    record.push({
+                        source: element,
+                        target: ID
+                    });
                 }
             });
         }
@@ -54,14 +59,14 @@ const CacheData = (name, data) => {
 function ForceGraph(dataset_name, force) {
     window.name = dataset_name;
     if (dataset_name in window.cache) {
-        // force.render(window.cache[dataset_name]);
-        // BindClickEvent(".mainGraph .node", "#one", window.cache[dataset_name]);
+        force.render(window.cache[dataset_name]);
+        BindClickEvent(".mainGraph .node", "#one", window.cache[dataset_name]);
     } else {
-        Loader("emb/" + dataset_name, (err, data) => {
-            // force.render(data);
-            // BindClickEvent(".mainGraph .node", "#one", data);
-            let x = new ScatterGraph(".mainGraph");
-            x.render(data);
+        Loader("graph-struc/" + dataset_name + "/graph", (err, data) => {
+            force.render(data);
+            BindClickEvent(".mainGraph .node", "#one", data);
+            // let x = new ScatterGraph(".mainGraph");
+            // x.render(data);
             CacheData(dataset_name, data);
         });
     }

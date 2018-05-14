@@ -86,11 +86,10 @@ class ForceGraph {
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
-
+            let rad = 5;
+            node.attr("cx", d => d.x = Math.max(rad, Math.min(d.x, width - rad)));
+            node.attr("cy", d => d.y = Math.max(rad, Math.min(d.y, height - rad)));
             node.attr("transform", d => `translate(${d.x},${d.y})`)
-            node.attr("transx", d => d.x);
-            node.attr("transy", d => d.y);
-
         }
 
 

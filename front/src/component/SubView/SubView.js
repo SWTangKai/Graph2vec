@@ -60,11 +60,19 @@ class SubView {
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(first_data => {
-                        this.clean();
-                        this.createFirstView(second_data, dataset_name);
+                        // this.clean();
+                        this.Lshift();
+
+                        // this.createFirstView(second_data, dataset_name);
                         this.creatSecondView(first_data, dataset_name);
                     })
             })
+    }
+
+    Lshift() {
+        $(this.firstView).remove()
+        $(this.secondView).attr('id', this.firstView.slice(1))
+        $('<div class="xxx" id="' + this.secondView.slice(1) + '"></div>').appendTo(this.dom)
     }
 
 }

@@ -1,3 +1,5 @@
+// import * as d3 from 'd3'
+
 /**
  *
  *
@@ -23,7 +25,7 @@ class ForceDirect {
         const simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody())
+            .force("charge", d3.forceManyBody().strength([-50]))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         const svg = d3
@@ -45,11 +47,12 @@ class ForceDirect {
             .append("g")
             .attr("class", "node");
 
+        let color = d3.scaleOrdinal(d3.schemeCategory20);
+
         node
             .append("circle")
             .attr("r", nodeRadius)
-            .on("mouseover", mouseOverFunction)
-            .on("mouseout", mouseOutFunction)
+            .attr("fill", d => color(d.c))
             .call(
                 d3
                 .drag()
@@ -57,7 +60,8 @@ class ForceDirect {
                 .on("drag", dragged)
                 .on("end", dragended)
             );
-
+        // .on("mouseover", mouseOverFunction)
+        //     .on("mouseout", mouseOutFunction)
         simulation.nodes(data.nodes).on("tick", ticked);
         simulation.force("link").links(data.links);
 
@@ -162,8 +166,8 @@ class ForceDirect {
 
         function dragended(d) {
             if (!d3.event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
+            // d.fx = null;
+            // d.fy = null;
         }
     }
 }
