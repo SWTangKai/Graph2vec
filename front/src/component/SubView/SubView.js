@@ -1,6 +1,9 @@
 // import echarts from "echarts";
 import SubCard from "./SubCard/SubCard";
-import {Loader, log} from "Utils/utils";
+import {
+    Loader,
+    log
+} from "Utils/utils";
 
 import "./SubView.css";
 
@@ -58,7 +61,8 @@ class SubView {
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(first_data => {
                         this.clean();
-                        this.createFirstView(first_data, dataset_name);
+                        this.createFirstView(second_data, dataset_name);
+                        this.creatSecondView(first_data, dataset_name);
                     })
             })
     }
