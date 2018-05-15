@@ -62,7 +62,6 @@ class SubView {
                     .then(first_data => {
                         // this.clean();
                         this.Lshift();
-
                         // this.createFirstView(second_data, dataset_name);
                         this.creatSecondView(first_data, dataset_name);
                     })
