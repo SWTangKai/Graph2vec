@@ -124,6 +124,9 @@ class DetailCircleGraph {
             })
             .style('stroke', '#fff')
             .style("fill", function (d) {
+                if((d.children ? d : d.parent) == null){
+                    return d.data.c
+                }
                 return color.Get((d.children ? d : d.parent).data.c);
                 //if(d.children) d ;else d.parent
             })
