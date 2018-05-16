@@ -1,7 +1,7 @@
 #tree-graph {
-    height: 15%;
+    height: 35%;
     width: 100%;
     float: left;
     padding: 10px;
-    overflow:hidden;
+    /* overflow:hidden; */
 }

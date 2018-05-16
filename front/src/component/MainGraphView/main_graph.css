@@ -2,7 +2,9 @@
     height: 35%;
     width: 35%;
     float: left;
+    /* border: brown solid; */
 }
+
 .node circle {
     stroke: white;
     stroke-width: 1.5px;

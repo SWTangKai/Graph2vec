@@ -1,124 +1,275 @@
-d3.json('http://localhost:5000/api/v2/graph-struc/karate-mirrored/main_graph', (error, graph) => {
-    const width = 1200;
-    const height = 1000;
-
-    const simulation = d3.forceSimulation()
-        .nodes(graph.nodes)
-        .force('link', d3.forceLink().id(d => d.group_id))
-        .force('charge', d3.forceManyBody().strength([-150]))
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .on('tick', ticked);
-
-    simulation.force('link')
-        .links(graph.links)
-        .distance([50]);
-
-    const R = 10;
-
-    const svg = d3.select('body').append('svg')
-        .attr('width', width)
-        .attr('height', height);
-
-
-    let link = svg.selectAll('line')
-        .data(graph.links)
-        .enter().append('line');
-
-    link
-        .attr('class', 'link')
-        .attr('marker-end', 'url(#end-arrow)')
-        .on('mouseout', fade(1));
-
-    let node = svg.selectAll('.node')
-        .data(graph.nodes)
-        .enter().append('g')
-        .attr('class', 'node');
-
-    node.append('circle')
-        .attr('r', R)
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
-
-    d3.selectAll('.x')
-        .data([{
-            index: 1
+var data = {
+    type: 'action',
+    name: '1',
+    attributes: [],
+    children: [{
+        type: 'children',
+        name: '2',
+        attributes: [{
+            'source-type-property-value': 'streetlight'
+        }],
+        children: [{
+            type: 'parents',
+            name: '3',
+            attributes: [{
+                'source-type-property-value': 'cable'
+            }],
+            children: [{
+                type: 'resource-delete',
+                name: '4',
+                attributes: [],
+                children: []
+            }]
         }, {
-            index: 2
-        }, {
-            index: 3
-        }, {
-            index: 4
-        }, {
-            index: 5
-        }])
-        .enter()
+            type: 'children',
+            name: '5',
+            attributes: [{
+                'source-type-property-value': 'lantern'
+            }],
+            children: []
+        }]
+    }]
+};
 
-    d3.selectAll('.x')
-        .on('mouseover', d => {
-            console.log(d);
-            fade(.1)(d);
-        })
-        .on('mouseout', d => {
-            console.log(d);
-            fade(1)(d);
-        })
+// ### DATA MODEL END Set the dimensions and margins of the diagram
+var margin = {
+        top: 20,
+        right: 90,
+        bottom: 30,
+        left: 90
+    },
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
+// append the svg object to the body of the page appends a 'group' element to
+// 'svg' moves the 'group' element to the top left margin
+var svg = d3
+    .select("body")
+    .append("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    node.append('text')
-        .attr('x', 0)
-        .attr('dy', '.35em')
-        .text(d => d.name);
+var i = 0,
+    duration = 750,
+    root;
 
-    function ticked() {
-        link
-            .attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
+// declares a tree layout and assigns the size
+var treemap = d3
+    .tree()
+    .size([height, width]);
 
-        node
-            .attr('transform', d => `translate(${d.x},${d.y})`);
-    }
+// Assigns parent, children, height, depth
+root = d3.hierarchy(data, function (d) {
+    return d.children;
+});
+root.x0 = height / 2;
+root.y0 = 0;
 
-    function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-    }
+update(root);
 
-    function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-    }
+var selected = null;
 
-    function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-    }
+function update(source) {
 
-    const linkedByIndex = {};
-    graph.links.forEach(d => {
-        linkedByIndex[`${d.source.index},${d.target.index}`] = 1;
+    // Assigns the x and y position for the nodes
+    var treeData = treemap(root);
+
+    // Compute the new tree layout.
+    var nodes = treeData.descendants(),
+        links = treeData
+        .descendants()
+        .slice(1);
+
+    // Normalize for fixed-depth.
+    nodes.forEach(function (d) {
+        d.y = d.depth * 180
     });
-    window.links = linkedByIndex
 
-    function isConnected(a, b) {
-        return linkedByIndex[`${a.index},${b.index}`] || linkedByIndex[`${b.index},${a.index}`] || a.index === b.index;
+    // ### LINKS Update the links...
+    var link = svg
+        .selectAll('path.link')
+        .data(links, function (d) {
+            return d.id;
+        });
+    let curves = d3.line().curve(d3.curveBasis);
+
+    // Enter any new links at the parent's previous position.
+    var linkEnter = link
+        .enter()
+        .append('path')
+        .attr("class", "link")
+        .attr("stroke-width", 2)
+        .attr("fill", 'none')
+        .attr("stroke", 'black')
+        .attr("d", function (d) {
+            let point = [
+                [d.y, d.x],
+                [(d.y + d.parent.y) / 2, d.x],
+                [(d.y + d.parent.y) / 2, d.parent.x],
+                [d.parent.y, d.parent.x]
+            ]
+            // console.log(d)
+            // return "M" + d.y + "," + d.x +
+            //     "C" + (d.y + d.parent.y) / 2 + "," + d.x +
+            //     " " + (d.y + d.parent.y) / 2 + "," + d.parent.x +
+            //     " " + d.parent.y + "," + d.parent.x;
+            return curves(point)
+        });
+
+    var linkUpdate = linkEnter.merge(link);
+
+    linkUpdate
+        .transition()
+        .duration(duration)
+        .attr("d", function (d) {
+            let point = [
+                [d.y, d.x],
+                [(d.y + d.parent.y) / 2, d.x],
+                [(d.y + d.parent.y) / 2, d.parent.x],
+                [d.parent.y, d.parent.x]
+            ]
+            // console.log(d)
+            // return "M" + d.y + "," + d.x +
+            //     "C" + (d.y + d.parent.y) / 2 + "," + d.x +
+            //     " " + (d.y + d.parent.y) / 2 + "," + d.parent.x +
+            //     " " + d.parent.y + "," + d.parent.x;
+            return curves(point)
+        });
+
+
+
+    // Remove any exiting links
+    var linkExit = link
+        .exit()
+        .transition()
+        .duration(duration)
+        .attr("d", function (d) {
+            let point = [
+                [d.y, d.x],
+                [d.y, d.x]
+            ]
+            // console.log(d)
+            // return "M" + d.y + "," + d.x +
+            //     "C" + (d.y + d.parent.y) / 2 + "," + d.x +
+            //     " " + (d.y + d.parent.y) / 2 + "," + d.parent.x +
+            //     " " + d.parent.y + "," + d.parent.x;
+            return curves(point)
+        })
+        .remove();
+
+    // var linkExit = link.selectAll('path').remove()
+
+    // ### CIRCLES Update the nodes...
+    var node = svg
+        .selectAll('g.node')
+        .data(nodes, function (d) {
+            return d.id || (d.id = ++i);
+        });
+
+    // Enter any new modes at the parent's previous position.
+    var nodeEnter = node
+        .enter()
+        .append('g')
+        .attr('class', 'node')
+        .attr("transform", function (d) {
+            return "translate(" + source.y0 + "," + source.x0 + ")";
+        })
+        .on('click', click);
+
+    // Add Circle for the nodes
+    nodeEnter
+        .append('circle')
+        .attr('class', 'node')
+        .attr('r', 25)
+        .style("fill", function (d) {
+            return "#0e4677";
+        });
+
+    // Update
+    var nodeUpdate = nodeEnter.merge(node);
+
+    // Transition to the proper position for the node
+    nodeUpdate
+        .transition()
+        .duration(duration)
+        .attr("transform", function (d) {
+            return "translate(" + d.y + "," + d.x + ")";
+        });
+
+    // Update the node attributes and style
+    nodeUpdate
+        .select('circle.node')
+        .attr('r', 25)
+        .style("fill", function (d) {
+            return "#0e4677";
+        })
+        .attr('cursor', 'pointer');
+
+    // Remove any exiting nodes
+    var nodeExit = node
+        .exit()
+        .transition()
+        .duration(duration)
+        .attr("transform", function (d) {
+            return "translate(" + source.y + "," + source.x + ")";
+        })
+        .remove();
+
+    // On exit reduce the node circles size to 0
+    nodeExit
+        .select('circle')
+        .attr('r', 0);
+
+    // Store the old positions for transition.
+    nodes.forEach(function (d) {
+        d.x0 = d.x;
+        d.y0 = d.y;
+    });
+
+    // Toggle children on click.
+    function click(d) {
+        selected = d;
+        document
+            .getElementById('add-child')
+            .disabled = false;
+        // document
+        //     .getElementById('remove')
+        //     .disabled = false;
+        update(d);
     }
+}
 
-    function fade(opacity) {
-        return d => {
-            node.style('stroke-opacity', function (o) {
-                const thisOpacity = isConnected(d, o) ? 1 : opacity;
-                this.setAttribute('fill-opacity', thisOpacity);
-                return thisOpacity;
-            });
+document
+    .getElementById('add-child')
+    .onclick = function () {
 
-            link.style('stroke-opacity', o => (o.source.index === d.index || o.target.index === d.index ? 1 : opacity));
-            link.attr('marker-end', o => (opacity === 1 || o.source.index === d.index || o.target.index === d.index ? 'url(#end-arrow)' : 'url(#end-arrow-fade)'));
+        //creates New OBJECT
+        var newNodeObj = {
+            type: 'resource-delete',
+            name: new Date().getTime(),
+            attributes: [],
+            children: []
         };
-    }
-})
+        //Creates new Node
+        var newNode = d3.hierarchy(newNodeObj);
+        newNode.depth = selected.depth + 1;
+        newNode.height = selected.height - 1;
+        newNode.parent = selected;
+        newNode.id = Date.now();
+
+        if (!selected.children) {
+            selected.children = [];
+            selected.data.children = [];
+        }
+        selected
+            .children
+            .push(newNode);
+        selected
+            .data
+            .children
+            .push(newNode.data);
+
+        update(selected);
+    };

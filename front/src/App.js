@@ -53,3 +53,13 @@ export default function (container) {
     let element;
     return element;
 }
+
+
+if (module.hot) {
+    module.hot.accept("./component/TreeGraphView/TreeGraphView", () => {
+        $('#tree-graph').remove()
+        let treeGraphView = new TreeGraphView("#tree-graph");
+        treeGraphView.render(1);
+    });
+    // module.hot.accept();
+}
