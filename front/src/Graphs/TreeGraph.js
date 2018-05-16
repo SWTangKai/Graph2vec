@@ -7,11 +7,13 @@ class TreeGraph {
     update(data) {
         let duration = 750,
             nodeRedius = 10,
-            interval = 150;
+            interval = 150,
+            maxDepth = 0;
         let curves = d3.line().curve(d3.curveBasis);
 
 
         data = d3.hierarchy(data, function (d) {
+
             return d.children;
         });
 
@@ -23,6 +25,7 @@ class TreeGraph {
 
         //  // Normalize for fixed-depth.
         nodesData.forEach(function (d) {
+            maxDepth = Math.max(maxDepth, d.depth);
             d.y = d.depth * interval
         });
 
@@ -40,11 +43,6 @@ class TreeGraph {
                     [(d.y + d.parent.y) / 2, d.parent.x],
                     [d.parent.y, d.parent.x]
                 ]
-                // console.log(d)
-                // return "M" + d.y + "," + d.x +
-                //     "C" + (d.y + d.parent.y) / 2 + "," + d.x +
-                //     " " + (d.y + d.parent.y) / 2 + "," + d.parent.x +
-                //     " " + d.parent.y + "," + d.parent.x;
                 return curves(point)
             });
 
@@ -123,6 +121,7 @@ class TreeGraph {
         nodeExit
             .select('circle')
             .attr('r', 0);
+        return maxDepth;
     }
 
     render(treeData) {
@@ -151,7 +150,7 @@ class TreeGraph {
                 "translate(" + margin.left + "," + margin.top + ")");
 
 
-        this.update(treeData);
+        return this.update(treeData);
     }
 }
 
