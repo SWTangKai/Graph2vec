@@ -11,9 +11,9 @@ class TreeGraph {
     }
     render(data) {
         var treeData = {
-            "name": "Top Level",
+            "name": "group_id_1",
             "children": [{
-                    "name": "Level 2: A",
+                    "name": "group_id_2",
                     "children": [{
                             "name": "Son of A"
                         },
@@ -23,7 +23,7 @@ class TreeGraph {
                     ]
                 },
                 {
-                    "name": "Level 2: B"
+                    "name": "group_id_3"
                 }
             ]
         };

@@ -85,7 +85,6 @@ class SubView {
                 if(!ID)
                     return;
                 this.appendTreeData(dataset_name, ID)
-                log(this.data)
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(second_data => {

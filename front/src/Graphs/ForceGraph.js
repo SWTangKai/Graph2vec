@@ -26,8 +26,12 @@ class ForceGraph {
 
         let nodes = data.nodes;
         let links = data.links;
+        
 
-
+        let labels = d3.nest()
+            .key(function(d){ return d.c})
+            .entries(nodes)
+        let labelsKey = d3.keys(labels)
 
         let simulation = d3
             .forceSimulation()
@@ -93,8 +97,13 @@ class ForceGraph {
                 .on("end", dragended)
             );
 
-
-
+        let labelg = svg.selectAll('xxxf')
+            .data(labelsKey)
+            .enter()
+            .append('g')
+         
+        if(labelsKey.length < 25)
+            addLabels(labelg);
 
         function ticked() {
             link
@@ -108,7 +117,29 @@ class ForceGraph {
             node.attr("transform", d => `translate(${d.x},${d.y})`)
         }
 
+        function addLabels(labelg){
 
+            labelg.append('rect')
+            .attr('transform', (d,i) => {
+                let transx = width * 0.9
+                let transy = height * 0.1 + height/labelsKey.length*i
+                return 'translate(' + transx + ',' + transy + ')'
+            })
+            .attr('width', '10px')
+            .attr('height', '5px')
+            .attr('fill', d => {return color.Get(d)})
+        
+        labelg.append('text')
+            .attr('x', (d,i) => {
+                return width * 0.93
+            })
+            .attr('y', (d,i) => {
+                return height * 0.11 + height/labelsKey.length*i
+            })
+            .text(d => {return d})
+            .attr('fill','#6e6c76')
+            .attr('font-size', '10px')
+        }
 
         function nodeRadius(d) {
             return Math.pow(40.0 * (4 + 1), 1 / 3);
