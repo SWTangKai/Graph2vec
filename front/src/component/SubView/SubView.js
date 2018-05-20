@@ -18,37 +18,86 @@ class SubView {
         this.nowfloor = 0;
         this.headnode = null;
         this.data = {};
+        this.nowNode = null;
+        this.treeIndex = 0;
+    }
+    assignRoot(click_id) {
+        this.data = this.createAnode(click_id);
+        this.nowNode = this.data;
+    }
+    createAnode(x) {
+        return {
+            'name': x['id'],
+            'c': x['c'],
+            'treeID': this.treeIndex++,
+            'children': []
+        }
+    }
+    newLife(id) {
+        this.nowNode['children'].push(this.createAnode(id))
     }
 
-    assignRoot(click_id){
-        this.data['name'] = click_id;
-        this.data = [this.data]
+    newNode(root_id, id) {
+        let tmp = this.findChild(this.nowNode, root_id);
+        tmp['children'].push(this.createAnode(id))
+        this.nowNode = tmp;
     }
 
-    appendTreeData(rootId,id){
+    findChild(nodes, id){
+        let node = null;
+        nodes.children.forEach(d => {
+            if(d['name'] === id){
+                node = d; 
+            }
+        })
+        return node
+    }
+
+    findByID(roots, id) {
+        if (roots['treeID'] === id) {
+            return roots
+        } else {
+            if ('children' in roots) {
+                let ans = -1;
+                roots['children'].forEach(d => {
+                    let x = this.findByID(d, id)
+                    if (x != -1) {
+                        ans = x;
+                    }
+                })
+                return ans;
+            } else {
+                return -1;
+            }
+        }
+    }
+    appendTreeData(rootId, id) {
         let searchdata = this.data;
         let returnItem;
-        let appendData = function(searchdata, rootId){
+        let appendData = function (searchdata, rootId) {
             searchdata.forEach((item) => {
-                if(item.name == rootId){
-                    	returnItem = item;
-                    if(!item.children){
+                if (item.name == rootId) {
+                    returnItem = item;
+                    if (!item.children) {
                         item.children = [];
-                        item.children.push({'name': id})
-                    }
-                    else if(item.children.length > 0){
+                        item.children.push({
+                            'name': id
+                        })
+                    } else if (item.children.length > 0) {
                         let isHere = 0
                         item.children.forEach((h) => {
-                            if(h.name == id)
+                            if (h.name == id)
                                 isHere = 1
                         })
-                        if(!isHere)
-                            item.children.push({'name': id})
+                        if (!isHere)
+                            item.children.push({
+                                'name': id
+                            })
                     }
-                        return item;
+                    return item;
                 }
-                if(item.children){
-                    if(item.children.length > 0){
+                if (item.children) {
+                    if (item.children.length > 0) {
                         find(item.children, rootId);
                     }
                 }
@@ -65,17 +114,25 @@ class SubView {
         this
             .secondCard
             .clean();
+        window.treeGraphView.clean();
     }
+
+    GetData(){
+        return this.data;
+    }
+
     render(data, dataset_name) {
+        window.d = this.data;
         this.dataset_name = dataset_name;
         this.createFirstView(data, dataset_name);
-        this.assignRoot(dataset_name)
+        this.assignRoot({'id':data.group_id, 'c':data.nodes[0].c});
+        window.treeGraphView.render(this.GetData());
     }
     createFirstView(data, dataset_name) {
-
         this
             .firstCard
             .render(data);
+            window.s = data;
         this
             .firstCard
             .detailCircleGraph
@@ -84,11 +141,14 @@ class SubView {
                     .secondCard
                     .clean();
                 log("Clean first")
+                window.x = d;
                 let ID = d.data.id;
-                if(!ID)
-                    return;
-                this.appendTreeData(dataset_name, ID)
+                this.newLife({'id':ID, 'c':d.data.c});
+                // this.first_id = ID;
                 log(this.data)
+                window.datas = this.data;
+        window.treeGraphView.update(this.GetData());
+                
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(second_data => {
@@ -107,10 +167,12 @@ class SubView {
             .bindEvent(this.secondView + " .entry", 'click', d => {
                 log("Clean second");
                 let ID = d.data.id;
-                if(!ID)
-                    return;
-                this.appendTreeData(dataset_name, ID)
+                window.x = d;
+                // this.appendTreeData(dataset_name, ID);
+                this.newNode(second_data.group_id, {'id':ID, 'c':d.data.c});
+                window.datas = this.data;
                 log(this.data)
+                window.treeGraphView.update(this.GetData());
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(first_data => {
@@ -137,8 +199,11 @@ class SubView {
                 this
                     .secondCard
                     .clean();
+                    let ID = d.data.id;
+                this.newLife({'id':ID, 'c':d.data.c});
                 log("Clean first")
-                let ID = d.data.id;
+                window.datas = this.data;
+                window.treeGraphView.update(this.GetData());
                 Loader
                     .json("graph-struc/" + this.dataset_name + "/subDis/" + ID)
                     .then(second_data => {

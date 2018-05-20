@@ -18,11 +18,11 @@ export default function (container) {
     let mainGraphView = new MainGraphView("#main-graph");
     let detailView = new DetailView("#detail-view");
 
-    let treeGraphView = new TreeGraphView("#tree-graph");
+    window.treeGraphView = new TreeGraphView("#tree-graph");
     let nodeInfoView = new NodeInfoView("#node-info-view");
     let subView = new SubView("#sub-view");
     let strucInfoView = new StrucInfoView("#struc-info-view");
-    treeGraphView.render(1);
+    
     let header = new HeaderView("#header", dataset_name => {
         $('#selecteddataset').html(dataset_name)
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(

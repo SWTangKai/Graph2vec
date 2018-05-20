@@ -1,3 +1,5 @@
+import { ColorManage } from "../utils/utils";
+
 class TreeGraph {
     constructor(domName) {
         this.domName = domName;
@@ -104,11 +106,12 @@ class TreeGraph {
                 return "translate(" + d.y + "," + d.x + ")";
             });
 
+        let color = new ColorManage();
         nodeUpdate
             .select('circle.node')
             .attr('r', nodeRedius)
             .style("fill", d => {
-                return 'red';
+                return color.Get(d.data.c);
             })
             .attr('cursor', 'pointer');
 
@@ -132,7 +135,7 @@ class TreeGraph {
                 bottom: 30,
                 left: 90
             },
-            width = (this.dom.clientWidth - margin.left - margin.right) / 2,
+            width = 2000,
             height = this.dom.clientHeight - margin.top - margin.bottom;
 
 
