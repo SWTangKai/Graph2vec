@@ -49,7 +49,7 @@ class SubView {
                 }
                 if(item.children){
                     if(item.children.length > 0){
-                        find(item.children, rootId);
+                        appendData(item.children, rootId);
                     }
                 }
             })
