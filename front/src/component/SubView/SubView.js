@@ -78,46 +78,6 @@ class SubView {
             }
         }
     }
-    appendTreeData(rootId, id) {
-        let searchdata = this.data;
-        let returnItem;
-        let appendData = function (searchdata, rootId) {
-            searchdata.forEach((item) => {
-                if (item.name == rootId) {
-                    returnItem = item;
-                    if (!item.children) {
-                        item.children = [];
-                        item.children.push({
-                            'name': id
-                        })
-                    } else if (item.children.length > 0) {
-                        let isHere = 0
-                        item.children.forEach((h) => {
-                            if (h.name == id)
-                                isHere = 1
-                        })
-                        if (!isHere)
-                            item.children.push({
-                                'name': id
-                            })
-                    }
-                    return item;
-                }
-<<<<<<< HEAD
-                if (item.children) {
-                    if (item.children.length > 0) {
-                        find(item.children, rootId);
-=======
-                if(item.children){
-                    if(item.children.length > 0){
-                        appendData(item.children, rootId);
->>>>>>> 98a79d2b03e36a21c850fb02d5a6d259869e1de4
-                    }
-                }
-            })
-        };
-        let item = appendData(searchdata, rootId)
-    }
 
     clean() {
         this.data = {};
@@ -156,18 +116,12 @@ class SubView {
                 log("Clean first")
                 window.x = d;
                 let ID = d.data.id;
-<<<<<<< HEAD
                 this.newLife({'id':ID, 'c':d.data.c});
                 // this.first_id = ID;
                 log(this.data)
                 window.datas = this.data;
         window.treeGraphView.update(this.GetData());
                 
-=======
-                if(!ID)
-                    return;
-                this.appendTreeData(dataset_name, ID)
->>>>>>> 98a79d2b03e36a21c850fb02d5a6d259869e1de4
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(second_data => {
