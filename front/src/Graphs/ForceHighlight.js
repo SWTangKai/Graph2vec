@@ -46,6 +46,52 @@ class ForceHighlight {
         }
     }
 
+    path(opacity) {
+        return tree_path_data => {
+            let linkedByIndex = {};
+            let nodes = {}
+            const calls = (now, children) => {
+                linkedByIndex[`${now.name},${children.name}`] = true;
+                
+                nodes[children.name] = true;
+            };
+            let iterTree = (roots) => {
+                if (!roots['children'] || roots['children'] === []) {
+                    return;
+                }
+                nodes[roots.name] = true;
+                roots['children'].forEach(n => {
+                    calls(roots, n);
+                    iterTree(n);
+                })
+            }
+            iterTree(tree_path_data);
+            this.node
+                .transition(500)
+                .style("opacity", o => {
+                    // console.log(o)
+                    if (!nodes[o.group_id]) {
+                        return opacity;
+                    }else{
+                        return 1;
+                    }
+                })
+            this.linkDom
+                .transition(500)
+                .style("stroke-opacity", o => {
+                    // console.log(o)
+                    
+                    let v = linkedByIndex[`${o.source.group_id},${o.target.group_id}`] || 
+                            linkedByIndex[`${o.target.group_id},${o.source.group_id}`];
+                    if(v){
+                        return 1;
+                    }else{
+                        return opacity;
+                    }
+                    // return v ? 1 : opacity;;
+                });
+        }
+    }
 
 }
 export default ForceHighlight;

@@ -17,8 +17,8 @@
 }
 
 #detail-view {
-    width: 50%;
-    height: 50%;
+    width: 100%;
+    height: 70%;
     white-space: nowrap;
     padding: 10px;
     float: left;
@@ -36,14 +36,14 @@
 
 #detail-view .detail-graph {
     width: 100%;
-    height: 60%;
+    height: 90%;
     border-bottom: rebeccapurple solid 3px;
     background-color: #efefef;
 }
 
 #detail-view .detail-info {
     width: 100%;
-    height: 40%;
+    height: 10%;
     /* border: saddlebrown solid 1px; */
 }
 

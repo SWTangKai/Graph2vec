@@ -28,10 +28,10 @@ export default function (container) {
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
             mainData => {
                 let forceHilight = mainGraphView.render(mainData);
+                window.forceHilight = forceHilight;
                 detailView.render(dataset_name);
-                window.fore = forceHilight;
-                d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
-                mainGraphView.bindEvent("#main-graph .node", "click", d => {
+                // d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
+                mainGraphView.bindEvent("#main-graph .real-nodes", "click", d => {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/subDis/" + ID)
                         .then(sub_graph => {

@@ -23,6 +23,16 @@ class GraphsItem(Resource):
             if ID == 'subStruc':
                 query = col.find({'type': 'remarkable_group'})
                 return jsonify(list(map(lambda i: i['data'], query)))
+            elif ID == 'main_graph':
+                main_graph = col.find_one({'type': ID})['data']
+                groups = col.find_one({'type': 'group_id'})
+                group_count_map = dict(map(lambda i: (i['group_id'], len(i['members'])), groups['data']))
+                main_graph['nodes'] = list(map(lambda n:{
+                                                        'c': n['c'], 
+                                                        'group_id': n['group_id'], 
+                                                        'counts':group_count_map[str(n['group_id'])]
+                                                        } , main_graph['nodes']))
+                return jsonify(main_graph)
             else:
                 query = col.find_one({'type': ID})
                 return jsonify(query['data'])

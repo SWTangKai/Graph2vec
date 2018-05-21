@@ -9,13 +9,12 @@ class TreeGraph {
     update(data) {
         let duration = 750,
             nodeRedius = 10,
-            interval = 150,
+            interval = 50,
             maxDepth = 0;
         let curves = d3.line().curve(d3.curveBasis);
 
 
         data = d3.hierarchy(data, function (d) {
-
             return d.children;
         });
 
@@ -25,6 +24,7 @@ class TreeGraph {
             linksData = treeData.descendants().slice(1);
         // adds the links between the nodes
 
+        let depthFlag = 0;
         //  // Normalize for fixed-depth.
         nodesData.forEach(function (d) {
             maxDepth = Math.max(maxDepth, d.depth);
@@ -130,10 +130,10 @@ class TreeGraph {
     render(treeData) {
         // set the dimensions and margins of the diagram
         const margin = {
-                top: 20,
-                right: 90,
-                bottom: 30,
-                left: 90
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 10
             },
             width = 2000,
             height = this.dom.clientHeight - margin.top - margin.bottom;

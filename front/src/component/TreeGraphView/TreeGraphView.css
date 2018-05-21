@@ -1,9 +1,9 @@
 #tree-graph {
-    height: 35%;
-    width: 20%;
-    /* float: left; */
+    height: 30%;
+    width: 100%;
+    float: left;
     padding: 10px;
-    position: absolute;
+    /* position: absolute; */
     z-index: 99999;
     /* border: sienna; */
     left: 900px;

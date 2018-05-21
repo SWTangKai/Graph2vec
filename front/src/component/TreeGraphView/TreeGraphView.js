@@ -19,7 +19,7 @@ class TreeView {
 
     render(treeData) {
         this.tree.render(treeData);
-        this.bindDrag();
+        // this.bindDrag();
     }
 
     update(newData) {

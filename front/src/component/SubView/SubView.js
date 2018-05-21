@@ -24,7 +24,12 @@ class SubView {
     assignRoot(click_id) {
         this.data = this.createAnode(click_id);
         this.nowNode = this.data;
+        this.notifyDataChange();
     }
+    notifyDataChange(){
+        window.forceHilight.path(.2)(this.data);
+    }
+
     createAnode(x) {
         return {
             'name': x['id'],
@@ -35,12 +40,14 @@ class SubView {
     }
     newLife(id) {
         this.nowNode['children'].push(this.createAnode(id))
+        this.notifyDataChange();
     }
 
     newNode(root_id, id) {
         let tmp = this.findChild(this.nowNode, root_id);
         tmp['children'].push(this.createAnode(id))
         this.nowNode = tmp;
+        this.notifyDataChange();
     }
 
     findChild(nodes, id){
@@ -190,6 +197,7 @@ class SubView {
             .bindEvent(this.secondView + " .entry", 'click', null);
         $(this.secondView).attr('id', this.firstView.slice(1));
         $('<div class="xxx" id="' + this.secondView.slice(1) + '"></div>').appendTo(this.dom);
+        this.secondCard.rename(this.firstView);
         this.firstCard = this.secondCard;
         this.secondCard = new SubCard(this.secondView);
         this

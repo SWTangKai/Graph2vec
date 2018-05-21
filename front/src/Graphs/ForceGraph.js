@@ -32,11 +32,12 @@ class ForceGraph {
         let simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.group_id))
-            .force("charge", d3.forceManyBody().strength([-50]))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("charge", d3.forceManyBody().strength([-40]))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(nodeRadius));
 
         simulation.nodes(nodes).on("tick", ticked);
-        simulation.force("link").links(links).distance([10]).id(d => d.group_id);
+        simulation.force("link").links(links).distance([20]).id(d => d.group_id);
 
         let svg = d3
             .select(domName)
@@ -55,9 +56,7 @@ class ForceGraph {
             .data(nodes)
             .enter()
             .append("g")
-            .attr("class", "node")
-            .attr("group_id", d => d['group_id'])
-            .attr("id", d => "_" + d['group_id']);
+            .attr("class", "heat");
 
         // .on("mouseover", mouseOverFunction)
         // .on("mouseout", mouseOutFunction)
@@ -66,7 +65,7 @@ class ForceGraph {
         let num = 0;
         node
             .append("circle")
-            .attr("r", nodeRadius)
+            .attr("r", d=>nodeRadius(d) * 3)
             .style("fill", d => {
                 let ncolor = color.Get(d.c)
                 num = num + 1;
@@ -75,25 +74,36 @@ class ForceGraph {
                     .attr("id", "radial-gradient-" + num);
                 
                 radialGradient.append("stop")
-                    .attr("offset", "0%")
+                    .attr("offset", "40%")
                     .attr("stop-color", ncolor);
                 
                 radialGradient.append("stop")
                     .attr("offset", "100%")
                     .attr("stop-color", "#fff");
-                
                 return "url(#radial-gradient-"+ num + ")"
+            }).style("opacity",.15);
+
+        let node1 = svg
+            .selectAll(".node")
+            .data(nodes)
+            .enter()
+            .append("g")
+            .attr("class", "real-nodes")
+            .attr("group_id", d => d['group_id'])
+            .attr("id", d => "_" + d['group_id']);
+        node1
+            .append("circle")
+            .attr("r", Math.pow(40.0 * (4 + 1), 1 / 3))
+            .style("fill", d => {
+                return color.Get(d.c);
             })
             .call(
-                
                 d3
                 .drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended)
             );
-
-
 
 
         function ticked() {
@@ -105,13 +115,16 @@ class ForceGraph {
             let rad = 5;
             node.attr("cx", d => d.x = Math.max(rad, Math.min(d.x, width - rad)));
             node.attr("cy", d => d.y = Math.max(rad, Math.min(d.y, height - rad)));
-            node.attr("transform", d => `translate(${d.x},${d.y})`)
+            node.attr("transform", d => `translate(${d.x},${d.y})`);
+            node1.attr("cx", d => d.x = Math.max(rad, Math.min(d.x, width - rad)));
+            node1.attr("cy", d => d.y = Math.max(rad, Math.min(d.y, height - rad)));
+            node1.attr("transform", d => `translate(${d.x},${d.y})`);
         }
 
 
 
         function nodeRadius(d) {
-            return Math.pow(40.0 * (4 + 1), 1 / 3);
+            return Math.pow(100.0 * (4 + 1) * (d.counts + 1), 1 / 3);
         }
 
         function dragstarted(d) {
@@ -132,7 +145,7 @@ class ForceGraph {
             // d.fy = null;
         }
 
-        return new ForceHighlight(node, link, links);
+        return new ForceHighlight(node1, link, links);
     }
 }
 export default ForceGraph;

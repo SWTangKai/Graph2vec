@@ -11,6 +11,12 @@ class SubCard {
         this.detailCircleGraph = new DetailCircleGraph(this.domName);
     }
 
+    rename(domName){
+        this.domName = domName;
+        this.dom = document.querySelector(domName);
+        this.detailCircleGraph.rename(domName);
+    }
+
     clean() {
         this.dom.innerHTML = "";
     }

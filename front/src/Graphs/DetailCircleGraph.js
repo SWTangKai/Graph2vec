@@ -23,7 +23,11 @@ class DetailCircleGraph {
     //     this.testRender(d);
 
     // }
-
+    rename(domName){
+        this.domName = domName;
+        this.width = document.querySelector(domName).clientWidth;
+        this.height = document.querySelector(domName).clientHeight;
+    }
     render(linkdata) {
         let domName = this.domName,
             width = this.width,

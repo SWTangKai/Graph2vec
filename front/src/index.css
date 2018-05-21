@@ -7,3 +7,18 @@ body,
 #content {
     height: 95%;
 }
+
+#left-group {
+    width: 50%;
+    height: 50%;
+    white-space: nowrap;
+    padding: 10px;
+    float: left;
+    overflow: hidden;
+    border: aquamarine;
+    padding: 0px;
+}
+
+line {
+    stroke-width: 2px;
+}
