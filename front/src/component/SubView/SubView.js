@@ -67,10 +67,12 @@ class SubView {
             .clean();
     }
     render(data, dataset_name) {
+        this.dataset_name = dataset_name;
         this.createFirstView(data, dataset_name);
         this.assignRoot(dataset_name)
     }
     createFirstView(data, dataset_name) {
+
         this
             .firstCard
             .render(data);
@@ -81,6 +83,7 @@ class SubView {
                 this
                     .secondCard
                     .clean();
+                log("Clean first")
                 let ID = d.data.id;
                 if(!ID)
                     return;
@@ -101,6 +104,7 @@ class SubView {
             .secondCard
             .detailCircleGraph
             .bindEvent(this.secondView + " .entry", 'click', d => {
+                log("Clean second");
                 let ID = d.data.id;
                 if(!ID)
                     return;
@@ -109,18 +113,38 @@ class SubView {
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(first_data => {
-                        // this.clean();
                         this.Lshift();
-                        // this.createFirstView(second_data, dataset_name);
                         this.creatSecondView(first_data, dataset_name);
                     })
             })
     }
 
     Lshift() {
-        $(this.firstView).remove()
-        $(this.secondView).attr('id', this.firstView.slice(1))
-        $('<div class="xxx" id="' + this.secondView.slice(1) + '"></div>').appendTo(this.dom)
+        $(this.firstView).remove();
+        this
+            .secondCard
+            .detailCircleGraph
+            .bindEvent(this.secondView + " .entry", 'click', null);
+        $(this.secondView).attr('id', this.firstView.slice(1));
+        $('<div class="xxx" id="' + this.secondView.slice(1) + '"></div>').appendTo(this.dom);
+        this.firstCard = this.secondCard;
+        this.secondCard = new SubCard(this.secondView);
+        this
+            .firstCard
+            .detailCircleGraph
+            .bindEvent(this.firstView + " .entry", 'click', d => {
+                this
+                    .secondCard
+                    .clean();
+                log("Clean first")
+                let ID = d.data.id;
+                Loader
+                    .json("graph-struc/" + this.dataset_name + "/subDis/" + ID)
+                    .then(second_data => {
+                        this.creatSecondView(second_data, this.dataset_name);
+                    })
+            })
+
     }
 
 }

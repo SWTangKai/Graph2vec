@@ -1,5 +1,8 @@
 import App from "./App";
-import { $, jquery } from "jquery";
+import {
+    $,
+    jquery
+} from "jquery";
 
 import "./index.css";
 

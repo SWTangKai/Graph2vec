@@ -25,29 +25,32 @@ commonConfig = {
         }
     },
     module: {
-        rules: [
-            {
+        loaders: [{
+            test: /\.js$/,
+            loaders: ['react-hot', 'babel'],
+            include: path.join(__dirname, 'src')
+        }],
+        rules: [{
                 test: /\.js$/,
                 use: ["babel-loader?cacheDirectory=true"],
                 include: path.join(__dirname, "src")
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                use: [
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 8192
-                        }
+                use: [{
+                    loader: "url-loader",
+                    options: {
+                        limit: 8192
                     }
-                ]
+                }]
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
-                })
+                use: ['style-loader', 'css-loader']
+                // ExtractTextPlugin.extract({
+                //     fallback: "style-loader",
+                //     use: "css-loader"
+                // })
             }
         ]
     },
