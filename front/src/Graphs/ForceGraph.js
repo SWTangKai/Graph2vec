@@ -111,6 +111,13 @@ class ForceGraph {
                 .on("end", dragended)
             );
 
+        let labelg = svg.selectAll('xxxf')
+            .data(labelsKey)
+            .enter()
+            .append('g')
+
+        if (labelsKey.length < 25)
+            addLabels(labelg);
 
         function ticked() {
             link

@@ -26,7 +26,7 @@ class SubView {
         this.nowNode = this.data;
         this.notifyDataChange();
     }
-    notifyDataChange(){
+    notifyDataChange() {
         window.forceHilight.path(.2)(this.data);
     }
 
@@ -50,11 +50,11 @@ class SubView {
         this.notifyDataChange();
     }
 
-    findChild(nodes, id){
+    findChild(nodes, id) {
         let node = null;
         nodes.children.forEach(d => {
-            if(d['name'] === id){
-                node = d; 
+            if (d['name'] === id) {
+                node = d;
             }
         })
         return node
@@ -90,7 +90,7 @@ class SubView {
         window.treeGraphView.clean();
     }
 
-    GetData(){
+    GetData() {
         return this.data;
     }
 
@@ -98,14 +98,17 @@ class SubView {
         window.d = this.data;
         this.dataset_name = dataset_name;
         this.createFirstView(data, dataset_name);
-        this.assignRoot({'id':data.group_id, 'c':data.nodes[0].c});
+        this.assignRoot({
+            'id': data.group_id,
+            'c': data.nodes[0].c
+        });
         window.treeGraphView.render(this.GetData());
     }
     createFirstView(data, dataset_name) {
         this
             .firstCard
             .render(data);
-            window.s = data;
+        window.s = data;
         this
             .firstCard
             .detailCircleGraph
@@ -116,12 +119,15 @@ class SubView {
                 log("Clean first")
                 window.x = d;
                 let ID = d.data.id;
-                this.newLife({'id':ID, 'c':d.data.c});
+                this.newLife({
+                    'id': ID,
+                    'c': d.data.c
+                });
                 // this.first_id = ID;
                 log(this.data)
                 window.datas = this.data;
-        window.treeGraphView.update(this.GetData());
-                
+                window.treeGraphView.update(this.GetData());
+
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(second_data => {
@@ -142,7 +148,10 @@ class SubView {
                 let ID = d.data.id;
                 window.x = d;
                 // this.appendTreeData(dataset_name, ID);
-                this.newNode(second_data.group_id, {'id':ID, 'c':d.data.c});
+                this.newNode(second_data.group_id, {
+                    'id': ID,
+                    'c': d.data.c
+                });
                 window.datas = this.data;
                 log(this.data)
                 window.treeGraphView.update(this.GetData());
@@ -173,8 +182,11 @@ class SubView {
                 this
                     .secondCard
                     .clean();
-                    let ID = d.data.id;
-                this.newLife({'id':ID, 'c':d.data.c});
+                let ID = d.data.id;
+                this.newLife({
+                    'id': ID,
+                    'c': d.data.c
+                });
                 log("Clean first")
                 window.datas = this.data;
                 window.treeGraphView.update(this.GetData());
