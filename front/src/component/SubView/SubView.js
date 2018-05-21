@@ -103,9 +103,15 @@ class SubView {
                     }
                     return item;
                 }
+<<<<<<< HEAD
                 if (item.children) {
                     if (item.children.length > 0) {
                         find(item.children, rootId);
+=======
+                if(item.children){
+                    if(item.children.length > 0){
+                        appendData(item.children, rootId);
+>>>>>>> 98a79d2b03e36a21c850fb02d5a6d259869e1de4
                     }
                 }
             })
@@ -150,12 +156,18 @@ class SubView {
                 log("Clean first")
                 window.x = d;
                 let ID = d.data.id;
+<<<<<<< HEAD
                 this.newLife({'id':ID, 'c':d.data.c});
                 // this.first_id = ID;
                 log(this.data)
                 window.datas = this.data;
         window.treeGraphView.update(this.GetData());
                 
+=======
+                if(!ID)
+                    return;
+                this.appendTreeData(dataset_name, ID)
+>>>>>>> 98a79d2b03e36a21c850fb02d5a6d259869e1de4
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(second_data => {

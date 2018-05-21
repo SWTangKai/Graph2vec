@@ -25,6 +25,7 @@ class ForceHighlight {
 
     fade(opacity) {
         return d => {
+            console.log(d);
             // const circle = d3.select(this);
             this.node
                 .transition(500)
