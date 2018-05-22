@@ -11,36 +11,53 @@ export default class {
 
     render(data) {
         this.dom.innerHTML = "";
-
-        let div = document.createElement("div");
-        div.className = "panel panel-primary";
-        
- 
-        let ul = document.createElement("ul");
-        ul.className = "list-group";
-        for (let k in data) {
-            if (k === "ID") {
-                div.appendChild(this.createHeader(data[k]));
+        this.dom.className = "panel panel-primary";
+        let span_f = document.createElement("span")
+        span_f.id = "id-list-group-item-active"
+        span_f.className = "list-group-item active";
+        this.dom.appendChild(span_f)
+        for(let k in data){
+            if(k == "ID"){
+                span_f.innerText = data[k]
                 continue;
             }
-            let li = document.createElement("li");
-            li.className = "list-group-item";
-            let span = document.createElement("span");
-            span.className = "badge";
-            span.innerHTML = data[k];
-            li.innerHTML = k;
-            li.appendChild(span);
-            ul.appendChild(li);
+
+            let li = document.createElement("li")
+            let i = document.createElement("i")
+            let spans = document.createElement("span")
+            li.setAttribute("herf", "#")
+            li.setAttribute("class", "list-group-item")
+            i.setAttribute("class", "fa fa-bar-chart-o")
+            spans.setAttribute("class", "badge")
+
+            i.appendChild(document.createTextNode(k))
+            spans.appendChild(document.createTextNode(data[k]))
+
+            li.appendChild(i)
+            li.appendChild(spans)
+
+            this.dom.appendChild(li)
         }
-        div.appendChild(ul);
-        this.dom.appendChild(div);
+
+        this.createFunbutton(this.dom)
+        
     }
 
-    createHeader(name) {
-        let dom = document.createElement("div");
-        dom.setAttribute("class", "panel-heading");
-        dom.appendChild(document.createTextNode(name));
-        // this.dom.appendChild(dom);
-        return dom;
+    createFunbutton(dom){
+        let ul = document.createElement('ul')
+        ul.setAttribute('class', 'sidebar-nav')
+        let funArr = ['Start', 'Dashboard', 'Shortcuts', 'Overview' , 'Events', 'About']
+        funArr.forEach((d,i) =>{
+            let li = document.createElement('li')
+            let a = document.createElement('a')
+            a.setAttribute('href' , '#')
+            a.appendChild(document.createTextNode(d))
+            li.appendChild(a)
+            if(i == 0){
+                li.setAttribute('class', 'sidebar-brand')
+            }
+            ul.appendChild(li)
+        })
+        dom.appendChild(ul)
     }
 }

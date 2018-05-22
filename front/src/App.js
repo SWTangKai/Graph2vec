@@ -15,11 +15,12 @@ import TreeGraphView from "./component/TreeGraphView/TreeGraphView";
  */
 export default function (container) {
     let sidebar = new SidebarView("#sidebar");
+    let nodeInfoView = new NodeInfoView("#node-info-view");
     let mainGraphView = new MainGraphView("#main-graph");
     let detailView = new DetailView("#detail-view");
 
     window.treeGraphView = new TreeGraphView("#tree-graph");
-    let nodeInfoView = new NodeInfoView("#node-info-view");
+    
     let subView = new SubView("#sub-view");
     let strucInfoView = new StrucInfoView("#struc-info-view");
     

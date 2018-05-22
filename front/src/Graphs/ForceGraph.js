@@ -20,7 +20,10 @@ class ForceGraph {
         let domName = this.domName;
         let width = this.width;
         let height = this.height;
-
+        let initLabelsHeight = height * 0.1
+        let intervalLabelsHeight = height * (1 - 0.1) / 20
+        let labelsCount = 19
+        let isLabelsBeyond = false;
 
         document.querySelector(domName).innerHTML = "";
 
@@ -34,6 +37,11 @@ class ForceGraph {
             })
             .entries(nodes)
         let labelsKey = d3.keys(labels)
+
+        if(labelsKey.length > labelsCount){
+            labelsKey = labelsKey.slice(0,labelsCount)
+            isLabelsBeyond = true
+        }
 
         let simulation = d3
             .forceSimulation()
@@ -111,14 +119,15 @@ class ForceGraph {
                 .on("end", dragended)
             );
 
+        console.log(labelsKey)
         let labelg = svg.selectAll('xxxf')
             .data(labelsKey)
             .enter()
             .append('g')
             .attr('id', d => 'label-' + d)
 
-        if (labelsKey.length < 25)
-            addLabels(labelg);
+        
+        addLabels(labelg, initLabelsHeight, intervalLabelsHeight, isLabelsBeyond, labelsCount);
 
         function ticked() {
             link
@@ -135,12 +144,12 @@ class ForceGraph {
             node1.attr("transform", d => `translate(${d.x},${d.y})`);
         }
 
-        function addLabels(labelg) {
+        function addLabels(labelg, initLabelsHeight, intervalLabelsHeight, isLabelsBeyond, labelsCount) {
 
             labelg.append('rect')
                 .attr('transform', (d, i) => {
                     let transx = width * 0.9
-                    let transy = height * 0.1 + height / labelsKey.length * i
+                    let transy = initLabelsHeight + intervalLabelsHeight * i
                     return 'translate(' + transx + ',' + transy + ')'
                 })
                 .attr('width', '10px')
@@ -154,13 +163,24 @@ class ForceGraph {
                     return width * 0.93
                 })
                 .attr('y', (d, i) => {
-                    return height * 0.11 + height / labelsKey.length * i
+                    return initLabelsHeight*1.1 + intervalLabelsHeight * i
                 })
                 .text(d => {
                     return d
                 })
                 .attr('fill', '#6e6c76')
                 .attr('font-size', '10px')
+
+            if(isLabelsBeyond){
+                d3.select('#main-graph').select('svg')
+                .append('text')
+                .attr('x', width * 0.93)
+                .attr('y', initLabelsHeight + intervalLabelsHeight * labelsCount)
+                .attr('id','shengluehao')
+                .text('...')
+                .attr('fill', '#6e6c76')
+                .attr('font-size', '20px')
+            }
         }
 
         function nodeRadius(d) {
