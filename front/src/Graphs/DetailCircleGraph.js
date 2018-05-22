@@ -18,6 +18,9 @@ class DetailCircleGraph {
         this.height = document.querySelector(domName).clientHeight;
     }
 
+    // TODO: node size change with node numbers
+    // FIXME: node drag
+
     // render(data, ID) {
 
     //     this.testRender(d);
@@ -41,11 +44,11 @@ class DetailCircleGraph {
         let simulation = d3
             .forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
-            .force("charge", d3.forceManyBody().strength([-50]))
+            .force("charge", d3.forceManyBody().strength([-200]))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         simulation.nodes(nodes).on("tick", ticked);
-        simulation.force("link").links(links).distance([100]);
+        simulation.force("link").links(links).distance([50]);
 
         let pie = d3.pie()
             .value(function (d) {
@@ -84,7 +87,11 @@ class DetailCircleGraph {
             })
             .style("fill", d => {
                 return color.Get(d.c);
-            });
+            })
+            .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended))
 
         let partition = d3.partition()
             .size([2 * Math.PI, radius]);
@@ -139,18 +146,18 @@ class DetailCircleGraph {
                 //if(d.children) d ;else d.parent
             })
             .attr('class', 'entry')
-
+        
+        
         let zoom_handler = d3.zoom()
             .scaleExtent([1, 10])
             .on("zoom", zoom_actions);
-
 
         function zoom_actions() {
             svg.attr("transform", d3.event.transform)
         }
 
         zoom_handler(svg);
-
+        
         function ticked() {
             link
                 .attr("x1", d => d.source.x)
@@ -159,6 +166,24 @@ class DetailCircleGraph {
                 .attr("y2", d => d.target.y);
             node.attr("transform", d => `translate(${d.x},${d.y})`)
         }
+
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+          
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+          
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
     }
 
     bindEvent(domName, type, callback) {

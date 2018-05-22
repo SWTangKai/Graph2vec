@@ -1,6 +1,6 @@
 #sub-view {
     /* border: brown solid; */
-    height: 50%;
+    height: 45%;
     width: 85%;
     float: left;
     /* border: black; */
@@ -10,4 +10,12 @@
     height: 100%;
     width: 50%;
     float: left;
+}
+
+
+
+
+#id-list-group-item-active{
+    background-image:linear-gradient(to bottom, #2a2a2a 0%, #2a2a2a 100%) !important;
+    border-color: #2a2a2a;
 }
