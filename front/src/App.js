@@ -22,7 +22,7 @@ export default function (container) {
     let nodeInfoView = new NodeInfoView("#node-info-view");
     let subView = new SubView("#sub-view");
     let strucInfoView = new StrucInfoView("#struc-info-view");
-    
+
     let header = new HeaderView("#header", dataset_name => {
         $('#selecteddataset').html(dataset_name)
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
@@ -30,7 +30,7 @@ export default function (container) {
                 let forceHilight = mainGraphView.render(mainData);
                 window.forceHilight = forceHilight;
                 detailView.render(dataset_name);
-                
+
                 mainGraphView.bindEvent("#main-graph .real-nodes", "click", d => {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/subDis/" + ID)
@@ -57,9 +57,9 @@ export default function (container) {
 
 if (module.hot) {
     module.hot.accept("./component/TreeGraphView/TreeGraphView", () => {
-        $('#tree-graph').remove()
-        let treeGraphView = new TreeGraphView("#tree-graph");
-        treeGraphView.render(1);
+        // $('#tree-graph').remove()
+        // let treeGraphView = new TreeGraphView("#tree-graph");
+        // treeGraphView.render(1);
     });
     // module.hot.accept();
 }

@@ -40,7 +40,7 @@ class SubView {
         }
     }
     newLife(data_info) {
-        if(this.findChild(this.nowNode, data_info.id) === null){
+        if (this.findChild(this.nowNode, data_info.id) === null) {
             this.nowNode['children'].push(this.createAnode(data_info))
             this.notifyDataChange();
         }
@@ -97,9 +97,10 @@ class SubView {
             this
                 .secondCard
                 .clean();
-            let data = this.findByID(this.data, d.data.treeID);
-            this.nowNode = data;
+
             if (d.data.children != []) {
+                let data = this.findByID(this.data, d.data.treeID);
+                this.nowNode = data;
                 data.children = [data.children[0]]
                 window.treeGraphView.update(this.GetData());
                 let child = d.data.children[0].name;

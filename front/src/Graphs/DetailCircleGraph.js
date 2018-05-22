@@ -23,7 +23,7 @@ class DetailCircleGraph {
     //     this.testRender(d);
 
     // }
-    rename(domName){
+    rename(domName) {
         this.domName = domName;
         this.width = document.querySelector(domName).clientWidth;
         this.height = document.querySelector(domName).clientHeight;
@@ -124,11 +124,15 @@ class DetailCircleGraph {
                 d3.select(this).transition().attr("transform", "scale(1.5)")
             })
             .on('mouseout', function (d) {
-                d3.select(this).transition().attr("transform", "scale(1)")
+                let me = this;
+                setTimeout(() => {
+                    d3.select(me).transition().attr("transform", "scale(1)");
+                }, 500);
+
             })
             .style('stroke', '#fff')
             .style("fill", function (d) {
-                if((d.children ? d : d.parent) == null){
+                if ((d.children ? d : d.parent) == null) {
                     return d.data.c
                 }
                 return color.Get((d.children ? d : d.parent).data.c);
