@@ -115,6 +115,7 @@ class ForceGraph {
             .data(labelsKey)
             .enter()
             .append('g')
+            .attr('id', d => 'label-' + d)
 
         if (labelsKey.length < 25)
             addLabels(labelg);
@@ -183,8 +184,9 @@ class ForceGraph {
             // d.fx = null;
             // d.fy = null;
         }
-
-        return new ForceHighlight(node1, link, links);
+        let forceHilight = new ForceHighlight(node1, link, links)
+        // d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
+        return forceHilight;
     }
 }
 export default ForceGraph;

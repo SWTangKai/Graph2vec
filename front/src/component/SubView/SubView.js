@@ -28,6 +28,7 @@ class SubView {
     }
     notifyDataChange() {
         window.forceHilight.path(.2)(this.data);
+        this.roll();
     }
 
     createAnode(x) {
@@ -79,6 +80,41 @@ class SubView {
         }
     }
 
+    roll() {
+
+    }
+    TreeUpdating() {
+        window.treeGraphView.update(this.GetData());
+        window.treeGraphView.bindEvent(d => {
+            console.log(d);
+            let ID = d.data.name;
+            // this.clean();
+            this
+                .firstCard
+                .clean();
+            this
+                .secondCard
+                .clean();
+            let data = this.findByID(this.data, d.data.treeID);
+            if (d.data.children != []) {
+                data.children = [data.children[0]]
+                window.treeGraphView.update(this.GetData());
+                let child = d.data.children[0].name;
+                // Loader.json()
+                Loader
+                    .json("graph-struc/" + this.dataset_name + "/subDis/" + child)
+                    .then(second_data => {
+                        this.creatSecondView(second_data, this.dataset_name);
+                    })
+            }
+            Loader
+                .json("graph-struc/" + this.dataset_name + "/subDis/" + ID)
+                .then(first_data => {
+                    this.createFirstView(first_data, this.dataset_name);
+                })
+
+        })
+    }
     clean() {
         this.data = {};
         this
@@ -108,7 +144,6 @@ class SubView {
         this
             .firstCard
             .render(data);
-        window.s = data;
         this
             .firstCard
             .detailCircleGraph
@@ -116,26 +151,22 @@ class SubView {
                 this
                     .secondCard
                     .clean();
-                log("Clean first")
-                window.x = d;
                 let ID = d.data.id;
                 this.newLife({
                     'id': ID,
                     'c': d.data.c
                 });
-                // this.first_id = ID;
-                log(this.data)
-                window.datas = this.data;
-                window.treeGraphView.update(this.GetData());
-
+                this.TreeUpdating();
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(second_data => {
                         this.creatSecondView(second_data, dataset_name);
                     })
-
             })
     }
+
+
+
     creatSecondView(second_data, dataset_name) {
         this
             .secondCard
@@ -144,17 +175,16 @@ class SubView {
             .secondCard
             .detailCircleGraph
             .bindEvent(this.secondView + " .entry", 'click', d => {
-                log("Clean second");
+
                 let ID = d.data.id;
-                window.x = d;
-                // this.appendTreeData(dataset_name, ID);
+
                 this.newNode(second_data.group_id, {
                     'id': ID,
                     'c': d.data.c
                 });
-                window.datas = this.data;
-                log(this.data)
-                window.treeGraphView.update(this.GetData());
+
+                this.TreeUpdating();
+
                 Loader
                     .json("graph-struc/" + dataset_name + "/subDis/" + ID)
                     .then(first_data => {
@@ -187,9 +217,8 @@ class SubView {
                     'id': ID,
                     'c': d.data.c
                 });
-                log("Clean first")
-                window.datas = this.data;
-                window.treeGraphView.update(this.GetData());
+
+                this.TreeUpdating();
                 Loader
                     .json("graph-struc/" + this.dataset_name + "/subDis/" + ID)
                     .then(second_data => {

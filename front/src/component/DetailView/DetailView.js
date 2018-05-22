@@ -36,6 +36,8 @@ export default class {
                     // TODO: render dynamic
                     me.createOneCard(subData);
                 });
+                d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
+                d3.selectAll('input').on('change', d=>console.log(d))
             }
         );
     }
@@ -57,8 +59,11 @@ export default class {
     createOneCard(data) {
         let ID = "detail-" + data["id"];
         let card = new Card("" + data["id"]);
+        
         let content = card.dom().outerHTML;
         this.owl.data("owl-carousel").addItem(content);
+
+       
         let nodec = '';
         data.nodes.forEach(function (d) {
             if (d['id'] == data['id'])

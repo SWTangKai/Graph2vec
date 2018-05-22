@@ -29,10 +29,17 @@ class Card {
         // detailGraph.render(data, this.ID);
         let ssankey = new Ssankey(this.graphID);
         ssankey.render(data, this.ID);
+        console.log(data)
         d3.select(this.infoID).data([{
-            index: data.id
+            index: data.c
         }]).enter();
         // console.log(this);
+        $('<input type="text" placeholder="Define this role name"></input>').appendTo(this.infoID);
+        // d3.select('#label-1 text').text('c')
+        $('#info-' + this.ID +  ' input').change(() => {
+            let val = $('#info-' + this.ID +  ' input').val()
+            d3.select('#label-' + data.c +  ' text').text(val)
+        })
     }
 
     createEle(type, className, id) {

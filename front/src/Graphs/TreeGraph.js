@@ -124,6 +124,9 @@ class TreeGraph {
         nodeExit
             .select('circle')
             .attr('r', 0);
+
+
+        
         return maxDepth;
     }
 
@@ -155,6 +158,7 @@ class TreeGraph {
 
         return this.update(treeData);
     }
+
 }
 
 export default TreeGraph;
