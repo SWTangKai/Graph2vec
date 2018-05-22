@@ -25,23 +25,26 @@ class ForceHighlight {
 
     fade(opacity) {
         return d => {
-            console.log(d);
+            // console.log(d);
             // const circle = d3.select(this);
             this.node
                 .transition(500)
                 .style("opacity", o => {
-                    let isConnectedValue = this.isConnected(o, d);
-                    if (!isConnectedValue) {
+                    if(o.c != d.index){
                         return opacity;
                     }
+                    // let isConnectedValue = this.isConnected(o, d);
+                    // if (!isConnectedValue) {
+                    //     return opacity;
+                    // }
                 })
-            this.linkDom
-                .transition(500)
-                .style("stroke-opacity", o => {
-                    let v = o.source.index === d.index || o.target.index === d.index ? 1 : opacity;
-                    return v;
-                })
-                .transition(500);
+            // this.linkDom
+            //     .transition(500)
+            //     .style("stroke-opacity", o => {
+            //         let v = o.source.index === d.index || o.target.index === d.index ? 1 : opacity;
+            //         return v;
+            //     })
+            //     .transition(500);
 
             // circle.transition(500).attr("r", () => 1.4 * nodeRadius(d));
         }

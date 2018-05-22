@@ -30,7 +30,7 @@ export default function (container) {
                 let forceHilight = mainGraphView.render(mainData);
                 window.forceHilight = forceHilight;
                 detailView.render(dataset_name);
-                // d3.selectAll(".detail-info").on('mouseover', forceHilight.fade(.2)).on('mouseout', forceHilight.fade(1));
+                
                 mainGraphView.bindEvent("#main-graph .real-nodes", "click", d => {
                     let ID = d.group_id;
                     Loader.json("graph-struc/" + dataset_name + "/subDis/" + ID)

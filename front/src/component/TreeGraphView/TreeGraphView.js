@@ -26,6 +26,9 @@ class TreeView {
         this.tree.update(newData);
     }
 
+    bindEvent(callback){
+        d3.selectAll('#tree-graph circle').on('click', callback)
+    }
     bindDrag() {
         let isMouseDown = false,
             initX = 0,
