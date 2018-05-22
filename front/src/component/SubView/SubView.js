@@ -39,9 +39,11 @@ class SubView {
             'children': []
         }
     }
-    newLife(id) {
-        this.nowNode['children'].push(this.createAnode(id))
-        this.notifyDataChange();
+    newLife(data_info) {
+        if(this.findChild(this.nowNode, data_info.id) === null){
+            this.nowNode['children'].push(this.createAnode(data_info))
+            this.notifyDataChange();
+        }
     }
 
     newNode(root_id, id) {
