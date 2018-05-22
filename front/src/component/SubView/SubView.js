@@ -96,6 +96,7 @@ class SubView {
                 .secondCard
                 .clean();
             let data = this.findByID(this.data, d.data.treeID);
+            this.nowNode = data;
             if (d.data.children != []) {
                 data.children = [data.children[0]]
                 window.treeGraphView.update(this.GetData());
@@ -105,6 +106,8 @@ class SubView {
                     .json("graph-struc/" + this.dataset_name + "/subDis/" + child)
                     .then(second_data => {
                         this.creatSecondView(second_data, this.dataset_name);
+                        this.TreeUpdating();
+                        this.notifyDataChange();
                     })
             }
             Loader
@@ -205,6 +208,7 @@ class SubView {
         this.secondCard.rename(this.firstView);
         this.firstCard = this.secondCard;
         this.secondCard = new SubCard(this.secondView);
+
         this
             .firstCard
             .detailCircleGraph
