@@ -22,3 +22,12 @@ body,
 line {
     stroke-width: 2px;
 }
+
+#bigsidebar {
+    /* border: brown solid; */
+    height: 100%;
+    width: 15%;
+    float: left;
+    background:#343434;
+    /* border: black; */
+}

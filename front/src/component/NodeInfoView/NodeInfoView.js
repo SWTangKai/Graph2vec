@@ -7,36 +7,35 @@ class NodeInfoView {
     }
 
     render(data) {
+        /*
         this.dom.innerHTML = "";
-        let div = document.createElement("div");
-        div.className = "panel panel-primary" ;
-
-        let ul = document.createElement("ul");
-        ul.className = "list-group";
-        for (let k in data) {
-            if (k === "ID") {
-                div.appendChild(this.createHeader("Node: " + data[k]));
+        this.dom.className = "panel panel-primary";
+        let span_f = document.createElement("span")
+        span_f.className = "list-group-item active";
+        this.dom.appendChild(span_f)
+        for(let k in data){
+            if(k == "ID"){
+                span_f.innerText = data[k]
                 continue;
             }
-            let li = document.createElement("li");
-            li.className = "list-group-item";
-            let span = document.createElement("span");
-            span.className = "badge";
-            span.innerHTML = data[k];
-            li.innerHTML = k;
-            li.appendChild(span);
-            ul.appendChild(li);
-        }
-        div.appendChild(ul);
-        this.dom.appendChild(div);
-    }
 
-    createHeader(name) {
-        let dom = document.createElement("div");
-        dom.setAttribute("class", "panel-heading");
-        dom.appendChild(document.createTextNode(name));
-        //this.dom.appendChild(dom);
-        return dom;
+            let li = document.createElement("li")
+            let i = document.createElement("i")
+            let spans = document.createElement("span")
+            li.setAttribute("herf", "#")
+            li.setAttribute("class", "list-group-item")
+            i.setAttribute("class", "fa fa-bar-chart-o")
+            spans.setAttribute("class", "badge")
+
+            i.appendChild(document.createTextNode(k))
+            spans.appendChild(document.createTextNode(data[k]))
+
+            li.appendChild(i)
+            li.appendChild(spans)
+
+            this.dom.appendChild(li)
+        }
+        */
     }
 }
 
