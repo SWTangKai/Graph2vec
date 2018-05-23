@@ -88,7 +88,6 @@ class SubView {
     TreeUpdating() {
         window.treeGraphView.update(this.GetData());
         window.treeGraphView.bindEvent(d => {
-            console.log(d);
             let ID = d.data.name;
             // this.clean();
             this
@@ -158,7 +157,8 @@ class SubView {
                     .secondCard
                     .clean();
                 let ID = d.data.id;
-                window.CLICK_ED_ID = ID;
+                let parentId = this.getParentId(d)
+                window.CLICK_ED_ID = parentId;
                 this.newLife({
                     'id': ID,
                     'c': d.data.c
@@ -182,9 +182,9 @@ class SubView {
             .secondCard
             .detailCircleGraph
             .bindEvent(this.secondView + " .entry", 'click', d => {
-
                 let ID = d.data.id;
-                window.CLICK_ED_ID = ID;
+                let parentId = this.getParentId(d)
+                window.CLICK_ED_ID = parentId;
 
                 this.newNode(second_data.group_id, {
                     'id': ID,
@@ -222,7 +222,8 @@ class SubView {
                     .secondCard
                     .clean();
                 let ID = d.data.id;
-                window.CLICK_ED_ID = ID;
+                let parentId = this.getParentId(d)
+                window.CLICK_ED_ID = parentId;
 
                 this.newLife({
                     'id': ID,
@@ -239,6 +240,15 @@ class SubView {
 
     }
 
+    getParentId(node){
+        let rootNode,tempNode = node;
+        while(tempNode){
+            if(tempNode.parent != null)
+                rootNode = tempNode.parent
+            tempNode = tempNode.parent
+        }
+        return rootNode.data.id
+    }
 }
 
 export default SubView;

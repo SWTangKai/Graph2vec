@@ -88,6 +88,9 @@ class DetailCircleGraph {
             .style("fill", d => {
                 return color.Get(d.c);
             })
+            .on("click", function(d){
+                console.log(d)
+            })
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
