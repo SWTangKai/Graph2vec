@@ -89,9 +89,9 @@ class DetailCircleGraph {
                 return color.Get(d.c);
             })
             .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended))
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended))
 
         let partition = d3.partition()
             .size([2 * Math.PI, radius]);
@@ -142,12 +142,16 @@ class DetailCircleGraph {
                 if ((d.children ? d : d.parent) == null) {
                     return d.data.c
                 }
+                // console.log("ARC:", d.data.id, ",C:", window.CLICK_ED_ID);
+                if (d.children === undefined && d.data.id === window.CLICK_ED_ID) {
+                    return "#000";
+                }
                 return color.Get((d.children ? d : d.parent).data.c);
                 //if(d.children) d ;else d.parent
             })
             .attr('class', 'entry')
-        
-        
+
+
         let zoom_handler = d3.zoom()
             .scaleExtent([1, 10])
             .on("zoom", zoom_actions);
@@ -157,7 +161,7 @@ class DetailCircleGraph {
         }
 
         zoom_handler(svg);
-        
+
         function ticked() {
             link
                 .attr("x1", d => d.source.x)
@@ -172,12 +176,12 @@ class DetailCircleGraph {
             d.fx = d.x;
             d.fy = d.y;
         }
-          
+
         function dragged(d) {
             d.fx = d3.event.x;
             d.fy = d3.event.y;
         }
-          
+
         function dragended(d) {
             if (!d3.event.active) simulation.alphaTarget(0);
             d.fx = null;

@@ -158,6 +158,7 @@ class SubView {
                     .secondCard
                     .clean();
                 let ID = d.data.id;
+                window.CLICK_ED_ID = ID;
                 this.newLife({
                     'id': ID,
                     'c': d.data.c
@@ -183,6 +184,7 @@ class SubView {
             .bindEvent(this.secondView + " .entry", 'click', d => {
 
                 let ID = d.data.id;
+                window.CLICK_ED_ID = ID;
 
                 this.newNode(second_data.group_id, {
                     'id': ID,
@@ -220,6 +222,8 @@ class SubView {
                     .secondCard
                     .clean();
                 let ID = d.data.id;
+                window.CLICK_ED_ID = ID;
+
                 this.newLife({
                     'id': ID,
                     'c': d.data.c
