@@ -26,7 +26,6 @@
 }
 
 .sidebar-nav li a {
-  display: block;
   text-decoration: none;
   color: #999999;
 }
@@ -55,8 +54,14 @@
   color: #fff;
   background: none;
 }
+.list-group-item{
+  background-color: #2a2a2a !important;
+  border: 0px !important;
+}
 
-
+body, .text-light-black{
+  color: rgba(255, 255, 255, 0.6)
+}
 
 /* .list-group {
     padding-left: 0;

@@ -47,9 +47,16 @@ export default class {
         let ul = document.createElement('ul')
         ul.setAttribute('class', 'sidebar-nav')
         let funArr = ['Start', 'Dashboard', 'Shortcuts', 'Overview' , 'Events', 'About']
+        let icon = 'glyphicon glyphicon-menu-right'
         funArr.forEach((d,i) =>{
             let li = document.createElement('li')
             let a = document.createElement('a')
+            if(i > 0){
+                let ii = document.createElement('i')
+                ii.setAttribute('class', icon)
+                ii.setAttribute('style', 'color:white')
+                li.appendChild(ii)
+            }
             a.setAttribute('href' , '#')
             a.appendChild(document.createTextNode(d))
             li.appendChild(a)
