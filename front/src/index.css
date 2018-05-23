@@ -17,6 +17,7 @@ body,
     overflow: hidden;
     border: aquamarine;
     padding: 0px;
+    border-left:dashed 2px #000;
 }
 
 line {
@@ -30,4 +31,11 @@ line {
     float: left;
     background:#343434;
     /* border: black; */
+}
+
+.h4style{
+    z-index:999;
+    position: absolute;
+    color: #999;
+    transform: translate(10px,0px) ;
 }

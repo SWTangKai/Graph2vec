@@ -48,7 +48,7 @@ class DetailCircleGraph {
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         simulation.nodes(nodes).on("tick", ticked);
-        simulation.force("link").links(links).distance([50]);
+        simulation.force("link").links(links).distance([100]);
 
         let pie = d3.pie()
             .value(function (d) {
@@ -63,18 +63,22 @@ class DetailCircleGraph {
             .attr("height", height)
             .append('g')
 
-        let link = svg
+        let link = svg.append('g')
             .selectAll(".xline")
             .data(links)
             .enter()
             .append("line");
 
-        let node = svg
+        let node = svg.append('g')
             .selectAll(".xnode")
             .data(nodes)
             .enter()
             .append("g")
-            .attr("class", "node");
+            .attr("class", "node")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended))
 
 
         node
@@ -88,13 +92,7 @@ class DetailCircleGraph {
             .style("fill", d => {
                 return color.Get(d.c);
             })
-            .on("click", function(d){
-                console.log(d)
-            })
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
+            
 
         let partition = d3.partition()
             .size([2 * Math.PI, radius]);
@@ -130,16 +128,6 @@ class DetailCircleGraph {
                 return d.depth ? null : "none";
             })
             .attr("d", arc)
-            .on("mouseover", function (d) {
-                d3.select(this).transition().attr("transform", "scale(1.5)")
-            })
-            .on('mouseout', function (d) {
-                let me = this;
-                setTimeout(() => {
-                    d3.select(me).transition().attr("transform", "scale(1)");
-                }, 500);
-
-            })
             .style('stroke', '#fff')
             .style("fill", function (d) {
                 if ((d.children ? d : d.parent) == null) {
@@ -153,6 +141,16 @@ class DetailCircleGraph {
                 //if(d.children) d ;else d.parent
             })
             .attr('class', 'entry')
+            .on("mouseover", function (d) {
+                d3.select(this).transition().style('stroke','red')
+            })
+            .on('mouseout', function (d) {
+                let me = this;
+                setTimeout(() => {
+                    d3.select(this).transition().style('stroke','#fff')
+                }, 500);
+
+            })
 
 
         let zoom_handler = d3.zoom()

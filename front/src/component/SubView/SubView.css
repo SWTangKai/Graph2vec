@@ -3,7 +3,13 @@
     height: 45%;
     width: 85%;
     float: left;
+    border-top:dashed 2px #333;
+    border-bottom:dashed 2px #333;
     /* border: black; */
+}
+
+#first-view{
+    border-right:dashed 2px #333;
 }
 
 .xxx {

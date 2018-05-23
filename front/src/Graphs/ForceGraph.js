@@ -27,6 +27,13 @@ class ForceGraph {
 
         document.querySelector(domName).innerHTML = "";
 
+        let h4 = document.createElement('h4')
+        h4.setAttribute('class', 'h4style')
+        h4.appendChild(document.createTextNode('Exploration graph'))
+        let dd = document.querySelector(domName)
+        dd.appendChild(h4)
+
+
         let nodes = data.nodes;
         let links = data.links;
 
