@@ -126,7 +126,6 @@ class ForceGraph {
                 .on("end", dragended)
             );
 
-        console.log(labelsKey)
         let labelg = svg.selectAll('xxxf')
             .data(labelsKey)
             .enter()
@@ -153,12 +152,14 @@ class ForceGraph {
 
         function addLabels(labelg, initLabelsHeight, intervalLabelsHeight, isLabelsBeyond, labelsCount) {
 
-            labelg.append('rect')
-                .attr('transform', (d, i) => {
-                    let transx = width * 0.9
-                    let transy = initLabelsHeight + intervalLabelsHeight * i
-                    return 'translate(' + transx + ',' + transy + ')'
+            labelg.append('circle')
+                .attr('cx', function(d,i){
+                    return width * 0.9
                 })
+                .attr('cy', function(d,i){
+                    return initLabelsHeight + intervalLabelsHeight * i
+                })
+                .attr('r', 5)
                 .attr('width', '10px')
                 .attr('height', '5px')
                 .attr('fill', d => {
@@ -170,13 +171,13 @@ class ForceGraph {
                     return width * 0.93
                 })
                 .attr('y', (d, i) => {
-                    return initLabelsHeight*1.1 + intervalLabelsHeight * i
+                    return initLabelsHeight*1.05 + intervalLabelsHeight * i
                 })
                 .text(d => {
                     return d
                 })
                 .attr('fill', '#6e6c76')
-                .attr('font-size', '10px')
+                .attr('font-size', '12px')
 
             if(isLabelsBeyond){
                 d3.select('#main-graph').select('svg')

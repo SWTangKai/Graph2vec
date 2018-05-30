@@ -69,12 +69,35 @@ class Ssankey {
             let source = head.split("_")[0],
                 target = head.split("_")[1],
                 value = temp[head];
-            graph.links.push({ source: source, target: target, value: value });
-            graph.nodes.push({ name: source });
-            graph.nodes.push({ name: target });
+            graph.links.push({ 'source': source, 'target': target, 'value': value });
+            graph.nodes.push({ 'name': source });
+            graph.nodes.push({ 'name': target });
         }
+        
+        //recalculate sankey link value
+        let recalLinkData = {}
+        graph.links.forEach(function(d){
+            let s = d.source
+            let v = d.value
+            if(s.split('-')[0] == 1){
+                if(recalLinkData[s]){
+                    recalLinkData[s] += v 
+                }else{
+                    recalLinkData[s] = v
+                }
+            }
+        })
+
+        graph.links.forEach(function(d){
+            let s = d.target
+            if(recalLinkData[s])
+                d.value = recalLinkData[s]
+        })
+
 
         // return only the distinct / unique nodes
+        
+        
         graph.nodes = d3
             .nest()
             .key(function(d) {

@@ -17,15 +17,6 @@ export default function (headerDom, changeCallBack) {
         });
     })
 
-    let select_dropdown_menu = $("#select-dropdown-menu"),
-        select_group = ['s1', 's2', 's3', 's4'];
-
-    select_group.forEach(e => {
-        select_dropdown_menu.append("<li><a href='#' id='" + e + "' value = '" + e + "'>" + e + "</a><li>");
-        $("#" + e).click(function () {
-            changeCallBack($(this).attr("value"))
-        })
-    })
-
+    //copyright @ 2018 all rights reserved
 
 }

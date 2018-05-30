@@ -32,10 +32,12 @@ class DetailCircleGraph {
         this.height = document.querySelector(domName).clientHeight;
     }
     render(linkdata) {
+        console.log(linkdata)
         let domName = this.domName,
             width = this.width,
             height = this.height;
-
+        
+        this.createLegend(linkdata)
         let color = new ColorManage();
         let radius = 15;
         let nodes = linkdata.nodes;
@@ -93,6 +95,7 @@ class DetailCircleGraph {
                 return color.Get(d.c);
             })
             
+            
 
         let partition = d3.partition()
             .size([2 * Math.PI, radius]);
@@ -130,17 +133,24 @@ class DetailCircleGraph {
             .attr("d", arc)
             .style('stroke', '#fff')
             .style("fill", function (d) {
-                if ((d.children ? d : d.parent) == null) {
-                    return d.data.c
-                }
                 // console.log("ARC:", d.data.id, ",C:", window.CLICK_ED_ID);
                 if (d.children === undefined && d.data.id === window.CLICK_ED_ID) {
                     return "#000";
+                }
+                if ((d.children ? d : d.parent) == null) {
+                    return color.Get(d.data.c)
                 }
                 return color.Get((d.children ? d : d.parent).data.c);
                 //if(d.children) d ;else d.parent
             })
             .attr('class', 'entry')
+            .attr('opacity', function(d){
+                if (d.children === undefined && d.data.id === window.CLICK_ED_ID) {
+                    return 0;
+                }
+                
+                return 1;
+            })
             .on("mouseover", function (d) {
                 d3.select(this).transition().style('stroke','red')
             })
@@ -193,6 +203,48 @@ class DetailCircleGraph {
 
     bindEvent(domName, type, callback) {
         d3.selectAll(domName).on(type, callback);
+    }
+
+    createLegend(linkdata){
+        console.log(this.domName)
+        d3.select(this.domName).append('div').attr('id','legend')
+            .attr('width','200px')
+            .attr('height','200px')
+            .style('position','absolute')
+            .style('background','#2a2a2a')
+            .style('transform','translate(670px,15px)')
+        
+        let data = {'group_id': linkdata.group_id.length,
+            'nodes': linkdata.nodes.length,
+            'edges': linkdata.edges.length}
+
+        let dom = document.querySelector(this.domName).querySelector('#legend')
+        
+        dom.className = "panel panel-primary";
+        let span_f = document.createElement("span")
+        span_f.id = "id-list-group-item-active"
+        span_f.className = "list-group-item active";
+        span_f.innerText = 'DataOverview'
+        dom.appendChild(span_f)
+        for(let k in data){
+
+            let li = document.createElement("li")
+            let i = document.createElement("i")
+            let spans = document.createElement("span")
+            li.setAttribute("herf", "#")
+            li.setAttribute("class", "list-group-item")
+            i.setAttribute("class", "fa fa-bar-chart-o")
+            spans.setAttribute("class", "badge")
+
+            i.appendChild(document.createTextNode(k))
+            spans.appendChild(document.createTextNode(data[k]))
+
+            li.appendChild(i)
+            li.appendChild(spans)
+
+            dom.appendChild(li)
+        }
+
     }
 }
 

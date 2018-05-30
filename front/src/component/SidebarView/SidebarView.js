@@ -39,7 +39,12 @@ export default class {
             this.dom.appendChild(li)
         }
 
-        this.createFunbutton(this.dom)
+        //this.createFunbutton(this.dom)
+        this.createDragBar('Line width','1','5')
+        this.createDragBar('Node size','3','10')
+        this.createDragBar('Simulator force','1','10')
+        this.createDragBar('Circle distance','0','1')
+        this.createDragBar('Heat size','0','1')
         
     }
 
@@ -66,5 +71,68 @@ export default class {
             ul.appendChild(li)
         })
         dom.appendChild(ul)
+        
     }
+
+    createDragBar(txt,attr1,attr2){
+        d3.select('#sidebar').append('span').attr('id','id-list-group-item-active').attr('class','list-group-item active').text(txt)
+        let width = +d3.select('#bigsidebar').style('width').split('px')[0]
+        let height = +d3.select('#bigsidebar').style('height').split('px')[0] * 0.05
+        let margin = width * 0.2
+        let radius = 10
+        let x1 = margin
+        let x2 = width - margin
+        let y = height/2
+        let svg = d3.select('#sidebar').append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .style('background-color','#2a2a2a')
+                .datum({
+                    x: x1 + (x2 - x1) * Math.random(),
+                    y: height / 2
+                  });
+        svg.append('text')
+            .attr("x", '15px')
+            .attr("y", '30px')
+                .attr('fill','white')
+                  .attr("font-family", "sans-serif")
+                 .attr("font-size", "12px")
+                .text(attr1)
+        
+        svg.append('text')
+                .attr("x", '250px')
+                .attr("y", '30px')
+                    .attr('fill','white')
+                      .attr("font-family", "sans-serif")
+                     .attr("font-size", "12px")
+                    .text(attr2)
+                  
+        
+
+        let line = svg.append("line")
+            .attr("x1", x1)
+            .attr("x2", x2)
+            .attr("y1", y)
+            .attr("y2", y)
+            .style("stroke", "gray")
+            .style("stroke-linecap", "round")
+            .style("stroke-width", 5);
+        
+        let circle = svg.append("circle")
+            .attr("r", radius)
+            .attr("cy", function(d) { return d.y; })
+            .attr("cx", function(d) { return d.x; })
+            .attr('fill','gray')
+            .call(d3.drag()
+                .on('drag', dragged));
+
+        function dragged(d) {
+            let x = d3.event.x
+                x = x < x1 ? x1 : x > x2 ? x2 : x;
+                d.x = x;
+            d3.select(this)
+              .attr("cx", d.x);
+        }
+    }
+
 }

@@ -14,7 +14,7 @@ const devConfig = {
         filename: "[name].[hash:8].js"
     },
     devServer: {
-        // host: "0.0.0.0",
+        host: "0.0.0.0",
         port: 8089,
         contentBase: path.join(__dirname, "./dist"),
         historyApiFallback: true,

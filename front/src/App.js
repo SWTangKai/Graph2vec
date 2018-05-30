@@ -27,6 +27,7 @@ export default function (container) {
     let header = new HeaderView("#header", dataset_name => {
         $('#selecteddataset').html(dataset_name)
         Loader.json("graph-struc/" + dataset_name + "/main_graph").then(
+            
             mainData => {
                 let forceHilight = mainGraphView.render(mainData);
                 window.forceHilight = forceHilight;
@@ -44,6 +45,7 @@ export default function (container) {
         );
 
         Loader.json("graph-struc/" + dataset_name).then(infoData => {
+            console.log(infoData,dataset_name)
             sidebar.render(infoData);
             nodeInfoView.render(infoData);
         });

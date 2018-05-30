@@ -185,7 +185,6 @@ class SubView {
                 let ID = d.data.id;
                 let parentId = this.getParentId(d)
                 window.CLICK_ED_ID = parentId;
-
                 this.newNode(second_data.group_id, {
                     'id': ID,
                     'c': d.data.c
